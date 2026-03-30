@@ -1,17 +1,14 @@
-import { component$, useSignal, $ } from '@builder.io/qwik';
+import { component$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
+
+import { Carousel } from "./components/carousel/carousel"
+
+import "./styles.css"
 
 interface CarouselItem {
   icon:  string;
   title: string;
   desc:  string;
-}
-
-interface CarouselSectionProps {
-  id:    string;
-  title: string;
-  items: CarouselItem[];
-  visibleCount?: number;  // defaults to 3
 }
 
 // Data
@@ -40,111 +37,24 @@ const LANGUAGES: CarouselItem[] = [
   { icon: '🐹', title: 'Go',          desc: 'Microservices and high-throughput backend APIs.' },
 ];
 
-// Carousel Component
-const CarouselSection = component$<CarouselSectionProps>(({
-  id,
-  title,
-  items,
-  visibleCount = 3,
-}) => {
-  const index = useSignal(0); // index of the leftmost visible card
-  const maxIndex = items.length - visibleCount;
 
-  const prev$ = $(() => {
-    if (index.value > 0) index.value -= 1;
-  });
 
-  const next$ = $(() => {
-    if (index.value < maxIndex) index.value += 1;
-  });
-
-  const goTo$ = $((i: number) => {
-    index.value = i;
-  });
-
-  // The translate offset: each card is (100 / visibleCount)% wide + gap compensation
-  // const translateX = `calc(${index.value} * (100% / ${visibleCount} + (${visibleCount - 1} / ${visibleCount}) * 1rem / ${visibleCount - 1 || 1}))`;
-
-  return (
-    <section class={`carousel-section ${id}`} aria-label={title}>
-      <h2 class="section-title">{title}</h2>
-
-      <div class="carousel-wrapper">
-        {/* Prev button */}
-        <button
-          class="carousel-btn"
-          onClick$={prev$}
-          disabled={index.value === 0}
-          aria-label="Previous"
-        >
-          ‹
-        </button>
-
-        {/* Track */}
-        <div class="carousel-track-outer">
-          <div
-            class="carousel-track"
-            style={{
-              transform: `translateX(calc(-${index.value} * (100% / ${visibleCount} + 1rem / ${visibleCount})))`,
-            }}
-          >
-            {items.map((item) => (
-              <article key={item.title} class="carousel-card">
-                <div class="card-icon" aria-hidden="true">{item.icon}</div>
-                <div class="card-title">{item.title}</div>
-                <p class="card-desc">{item.desc}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-
-        {/* Next button */}
-        <button
-          class="carousel-btn"
-          onClick$={next$}
-          disabled={index.value >= maxIndex}
-          aria-label="Next"
-        >
-          ›
-        </button>
-      </div>
-
-      {/* Dot indicators — one dot per possible stop */}
-      {maxIndex > 0 && (
-        <div class="carousel-dots" role="tablist" aria-label={`${title} pagination`}>
-          {Array.from({ length: maxIndex + 1 }, (_, i) => (
-            <button
-              key={i}
-              role="tab"
-              aria-selected={index.value === i}
-              aria-label={`Go to slide ${i + 1}`}
-              class={`carousel-dot ${index.value === i ? 'active' : ''}`}
-              onClick$={() => goTo$(i)}
-            />
-          ))}
-        </div>
-      )}
-    </section>
-  );
-});
-
-// ─── Home Page ───────────────────────────────────────────────────────────────
 export default component$(() => {
   return (
     <>
-      <CarouselSection
+      <Carousel
         id="projects"
         title="My Projects"
         items={PROJECTS}
       />
 
-      <CarouselSection
+      <Carousel
         id="skills"
         title="My Skills"
         items={SKILLS}
       />
 
-      <CarouselSection
+      <Carousel
         id="languages"
         title="My Languages"
         items={LANGUAGES}
