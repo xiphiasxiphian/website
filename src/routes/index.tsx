@@ -1,112 +1,168 @@
-import { component$ } from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
+import { component$, useSignal, $ } from '@builder.io/qwik';
+import type { DocumentHead } from '@builder.io/qwik-city';
 
-import Counter from "../components/starter/counter/counter";
-import Hero from "../components/starter/hero/hero";
-import Infobox from "../components/starter/infobox/infobox";
-import Starter from "../components/starter/next-steps/next-steps";
+// ─── Types ──────────────────────────────────────────────────────────────────
+interface CarouselItem {
+  icon:  string;
+  title: string;
+  desc:  string;
+}
 
+interface CarouselSectionProps {
+  id:    string;          // CSS class applied to section (projects | skills | languages)
+  title: string;
+  items: CarouselItem[];
+  visibleCount?: number;  // defaults to 3
+}
+
+// ─── Data ────────────────────────────────────────────────────────────────────
+// Edit these arrays to populate your carousels.
+// Add as many items as you like — the carousel handles cycling automatically.
+
+const PROJECTS: CarouselItem[] = [
+  { icon: '🚀', title: 'Project Alpha',   desc: 'A full-stack web application built with Qwik and Node.' },
+  { icon: '🎮', title: 'Game Engine',      desc: 'A lightweight 2D game engine written in TypeScript.' },
+  { icon: '🤖', title: 'AI Assistant',     desc: 'An LLM-powered productivity tool with custom fine-tuning.' },
+  { icon: '📊', title: 'Data Dashboard',   desc: 'Real-time analytics dashboard with interactive charts.' },
+  { icon: '🔐', title: 'Auth Library',     desc: 'Zero-dependency authentication library for Node.js.' },
+];
+
+const SKILLS: CarouselItem[] = [
+  { icon: '⚡', title: 'TypeScript',       desc: 'Strongly typed JavaScript — my go-to for all projects.' },
+  { icon: '🌐', title: 'Web Frameworks',   desc: 'Qwik, React, Next.js and the modern frontend ecosystem.' },
+  { icon: '🗄️', title: 'Databases',        desc: 'PostgreSQL, MongoDB, Redis and data modelling patterns.' },
+  { icon: '☁️', title: 'Cloud & DevOps',   desc: 'AWS, Docker, CI/CD pipelines and infrastructure as code.' },
+  { icon: '🎨', title: 'UI/UX Design',     desc: 'Figma, design systems, accessibility and motion design.' },
+  { icon: '🧠', title: 'Machine Learning', desc: 'PyTorch, model fine-tuning and deploying ML APIs.' },
+];
+
+const LANGUAGES: CarouselItem[] = [
+  { icon: '🟦', title: 'TypeScript',  desc: 'Primary language — used daily across frontend and backend.' },
+  { icon: '🐍', title: 'Python',      desc: 'Scripting, data science, and ML model development.' },
+  { icon: '☕', title: 'Java',        desc: 'Enterprise services and Android application development.' },
+  { icon: '🦀', title: 'Rust',        desc: 'Systems programming, performance-critical tools.' },
+  { icon: '🐹', title: 'Go',          desc: 'Microservices and high-throughput backend APIs.' },
+];
+
+// ─── Carousel Component ──────────────────────────────────────────────────────
+const CarouselSection = component$<CarouselSectionProps>(({
+  id,
+  title,
+  items,
+  visibleCount = 3,
+}) => {
+  const index = useSignal(0); // index of the leftmost visible card
+  const maxIndex = items.length - visibleCount;
+
+  const prev$ = $(() => {
+    if (index.value > 0) index.value -= 1;
+  });
+
+  const next$ = $(() => {
+    if (index.value < maxIndex) index.value += 1;
+  });
+
+  const goTo$ = $((i: number) => {
+    index.value = i;
+  });
+
+  // The translate offset: each card is (100 / visibleCount)% wide + gap compensation
+  // We use a CSS custom property so the track itself handles the maths.
+  // const translateX = `calc(${index.value} * (100% / ${visibleCount} + (${visibleCount - 1} / ${visibleCount}) * 1rem / ${visibleCount - 1 || 1}))`;
+
+  return (
+    <section class={`carousel-section ${id}`} aria-label={title}>
+      <h2 class="section-title">{title}</h2>
+
+      <div class="carousel-wrapper">
+        {/* Prev button */}
+        <button
+          class="carousel-btn"
+          onClick$={prev$}
+          disabled={index.value === 0}
+          aria-label="Previous"
+        >
+          ‹
+        </button>
+
+        {/* Track */}
+        <div class="carousel-track-outer">
+          <div
+            class="carousel-track"
+            style={{
+              transform: `translateX(calc(-${index.value} * (100% / ${visibleCount} + 1rem / ${visibleCount})))`,
+            }}
+          >
+            {items.map((item) => (
+              <article key={item.title} class="carousel-card">
+                <div class="card-icon" aria-hidden="true">{item.icon}</div>
+                <div class="card-title">{item.title}</div>
+                <p class="card-desc">{item.desc}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        {/* Next button */}
+        <button
+          class="carousel-btn"
+          onClick$={next$}
+          disabled={index.value >= maxIndex}
+          aria-label="Next"
+        >
+          ›
+        </button>
+      </div>
+
+      {/* Dot indicators — one dot per possible stop */}
+      {maxIndex > 0 && (
+        <div class="carousel-dots" role="tablist" aria-label={`${title} pagination`}>
+          {Array.from({ length: maxIndex + 1 }, (_, i) => (
+            <button
+              key={i}
+              role="tab"
+              aria-selected={index.value === i}
+              aria-label={`Go to slide ${i + 1}`}
+              class={`carousel-dot ${index.value === i ? 'active' : ''}`}
+              onClick$={() => goTo$(i)}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+});
+
+// ─── Home Page ───────────────────────────────────────────────────────────────
 export default component$(() => {
   return (
     <>
-      <Hero />
-      <Starter />
+      <CarouselSection
+        id="projects"
+        title="My Projects"
+        items={PROJECTS}
+      />
 
-      <div role="presentation" class="ellipsis"></div>
-      <div role="presentation" class="ellipsis ellipsis-purple"></div>
+      <CarouselSection
+        id="skills"
+        title="My Skills"
+        items={SKILLS}
+      />
 
-      <div class="container container-center container-spacing-xl">
-        <h3>
-          You can <span class="highlight">count</span>
-          <br /> on me
-        </h3>
-        <Counter />
-      </div>
-
-      <div class="container container-flex">
-        <Infobox>
-          <div q:slot="title" class="icon icon-cli">
-            CLI Commands
-          </div>
-          <>
-            <p>
-              <code>npm run dev</code>
-              <br />
-              Starts the development server and watches for changes
-            </p>
-            <p>
-              <code>npm run preview</code>
-              <br />
-              Creates production build and starts a server to preview it
-            </p>
-            <p>
-              <code>npm run build</code>
-              <br />
-              Creates production build
-            </p>
-            <p>
-              <code>npm run qwik add</code>
-              <br />
-              Runs the qwik CLI to add integrations
-            </p>
-          </>
-        </Infobox>
-
-        <div>
-          <Infobox>
-            <div q:slot="title" class="icon icon-apps">
-              Example Apps
-            </div>
-            <p>
-              Have a look at the <a href="/demo/flower">Flower App</a> or the{" "}
-              <a href="/demo/todolist">Todo App</a>.
-            </p>
-          </Infobox>
-
-          <Infobox>
-            <div q:slot="title" class="icon icon-community">
-              Community
-            </div>
-            <ul>
-              <li>
-                <span>Questions or just want to say hi? </span>
-                <a href="https://qwik.dev/chat" target="_blank">
-                  Chat on discord!
-                </a>
-              </li>
-              <li>
-                <span>Follow </span>
-                <a href="https://twitter.com/QwikDev" target="_blank">
-                  @QwikDev
-                </a>
-                <span> on Twitter</span>
-              </li>
-              <li>
-                <span>Open issues and contribute on </span>
-                <a href="https://github.com/QwikDev/qwik" target="_blank">
-                  GitHub
-                </a>
-              </li>
-              <li>
-                <span>Watch </span>
-                <a href="https://qwik.dev/media/" target="_blank">
-                  Presentations, Podcasts, Videos, etc.
-                </a>
-              </li>
-            </ul>
-          </Infobox>
-        </div>
-      </div>
+      <CarouselSection
+        id="languages"
+        title="My Languages"
+        items={LANGUAGES}
+      />
     </>
   );
 });
 
+// ─── Document Head ───────────────────────────────────────────────────────────
 export const head: DocumentHead = {
-  title: "Welcome to Qwik",
+  title: 'Siaphix',
   meta: [
-    {
-      name: "description",
-      content: "Qwik site description",
-    },
+    { name: 'description', content: 'Personal website of Siaphix — projects, skills and more.' },
+    { name: 'theme-color', content: '#07091a' },
   ],
 };
