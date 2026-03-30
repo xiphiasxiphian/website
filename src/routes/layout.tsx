@@ -2,8 +2,6 @@ import { component$, Slot } from '@builder.io/qwik';
 import { Link, useLocation } from '@builder.io/qwik-city';
 import './styles.css';
 
-// ─── Nav Items ─────────────────────────────────────────────────────────────────
-// To add new pages, simply append an entry here.
 const NAV_LINKS: { label: string; href: string }[] = [
   { label: 'Home',        href: '/'         },
   { label: 'About Me',    href: '/about'     },
@@ -12,7 +10,6 @@ const NAV_LINKS: { label: string; href: string }[] = [
   { label: 'Contact',     href: '/contact'   },
 ];
 
-// ─── Layout ────────────────────────────────────────────────────────────────────
 export default component$(() => {
   const loc = useLocation();
 

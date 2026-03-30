@@ -1,7 +1,6 @@
 import { component$, useSignal, $ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 
-// ─── Types ──────────────────────────────────────────────────────────────────
 interface CarouselItem {
   icon:  string;
   title: string;
@@ -9,16 +8,13 @@ interface CarouselItem {
 }
 
 interface CarouselSectionProps {
-  id:    string;          // CSS class applied to section (projects | skills | languages)
+  id:    string;
   title: string;
   items: CarouselItem[];
   visibleCount?: number;  // defaults to 3
 }
 
-// ─── Data ────────────────────────────────────────────────────────────────────
-// Edit these arrays to populate your carousels.
-// Add as many items as you like — the carousel handles cycling automatically.
-
+// Data
 const PROJECTS: CarouselItem[] = [
   { icon: '🚀', title: 'Project Alpha',   desc: 'A full-stack web application built with Qwik and Node.' },
   { icon: '🎮', title: 'Game Engine',      desc: 'A lightweight 2D game engine written in TypeScript.' },
@@ -44,7 +40,7 @@ const LANGUAGES: CarouselItem[] = [
   { icon: '🐹', title: 'Go',          desc: 'Microservices and high-throughput backend APIs.' },
 ];
 
-// ─── Carousel Component ──────────────────────────────────────────────────────
+// Carousel Component
 const CarouselSection = component$<CarouselSectionProps>(({
   id,
   title,
@@ -67,7 +63,6 @@ const CarouselSection = component$<CarouselSectionProps>(({
   });
 
   // The translate offset: each card is (100 / visibleCount)% wide + gap compensation
-  // We use a CSS custom property so the track itself handles the maths.
   // const translateX = `calc(${index.value} * (100% / ${visibleCount} + (${visibleCount - 1} / ${visibleCount}) * 1rem / ${visibleCount - 1 || 1}))`;
 
   return (

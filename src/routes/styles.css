@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap');
 
-/* ─── Color Palette ─────────────────────────────────────────────── */
+/* Color Palette */
 :root {
   --navy:          #07091a;
   --navy-mid:      #0d1133;
@@ -26,7 +26,6 @@
   --radius:        12px;
 }
 
-/* ─── Reset & Base ──────────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -50,14 +49,12 @@ body {
     radial-gradient(ellipse 60% 40% at 80% 110%, rgba(196, 175, 245, 0.06) 0%, transparent 60%);
 }
 
-/* ─── Layout ────────────────────────────────────────────────────── */
 .layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* ─── Header ────────────────────────────────────────────────────── */
 .header {
   display: flex;
   flex-direction: column;
@@ -132,7 +129,6 @@ body {
   box-shadow: var(--glow-blue);
 }
 
-/* ─── Main Content ──────────────────────────────────────────────── */
 .main {
   flex: 1;
   padding: 3rem 1.5rem 5rem;
@@ -141,7 +137,6 @@ body {
   margin: 0 auto;
 }
 
-/* ─── Section Titles ────────────────────────────────────────────── */
 .section-title {
   font-family: 'Cinzel', serif;
   font-size: 1rem;
@@ -162,7 +157,6 @@ body {
   opacity: 0.3;
 }
 
-/* ─── Slideshow / Carousel ──────────────────────────────────────── */
 .carousel-section {
   margin-bottom: 3.5rem;
 }
@@ -186,7 +180,6 @@ body {
   transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Each card is exactly 1/3 of the track minus gaps */
 .carousel-card {
   flex: 0 0 calc(33.333% - 0.667rem);
   background: var(--navy-card);
@@ -225,7 +218,6 @@ body {
   flex: 1;
 }
 
-/* Accent colours per section */
 .carousel-section.projects .section-title { color: var(--light-blue); }
 .carousel-section.projects .carousel-card:hover {
   border-color: rgba(137, 212, 245, 0.4);
@@ -244,7 +236,6 @@ body {
   box-shadow: var(--glow-pink);
 }
 
-/* ─── Carousel Arrow Buttons ────────────────────────────────────── */
 .carousel-btn {
   flex-shrink: 0;
   width: 38px;
@@ -274,7 +265,6 @@ body {
   cursor: not-allowed;
 }
 
-/* ─── Dot Indicators ────────────────────────────────────────────── */
 .carousel-dots {
   display: flex;
   justify-content: center;
@@ -302,7 +292,6 @@ body {
 .carousel-section.skills    .carousel-dot.active { background: var(--lavender); }
 .carousel-section.languages .carousel-dot.active { background: var(--pale-pink); }
 
-/* ─── Footer ────────────────────────────────────────────────────── */
 .footer {
   text-align: center;
   padding: 1.5rem;
