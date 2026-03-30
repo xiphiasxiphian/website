@@ -1,3 +1,13 @@
+import { component$, $, useSignal } from '@builder.io/qwik';
+
+import "./styles.css"
+
+export interface CarouselItem {
+  icon:  string;
+  title: string;
+  desc:  string;
+}
+
 interface CarouselSectionProps {
   id:    string;
   title: string;
@@ -31,7 +41,11 @@ export const Carousel = component$<CarouselSectionProps>(({
   // const translateX = `calc(${index.value} * (100% / ${visibleCount} + (${visibleCount - 1} / ${visibleCount}) * 1rem / ${visibleCount - 1 || 1}))`;
 
   return (
-    <section class={`carousel-section ${id}`} aria-label={title}>
+    <section
+      class={`carousel-section ${id}`}
+      aria-label={title}
+      style={{ "--visible-count": visibleCount }}
+    >
       <h2 class="section-title">{title}</h2>
 
       <div class="carousel-wrapper">

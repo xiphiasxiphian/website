@@ -12,17 +12,20 @@
 .carousel-track-outer {
   overflow: hidden;
   flex: 1;
-  border-radius: var(--radius);
+  border-radius: calc(var(--radius) + 10px);
+  padding: 10px;
+  margin: -10px;
 }
 
 .carousel-track {
   display: flex;
   gap: 1rem;
   transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-top: 10px;
 }
 
 .carousel-card {
-  flex: 0 0 calc(33.333% - 0.667rem);
+  flex: 0 0 calc(100% / var(--visible-count, 3) - (1rem * (var(--visible-count, 3) - 1) / var(--visible-count, 3)));
   background: var(--navy-card);
   border: 1px solid var(--navy-border);
   border-radius: var(--radius);
