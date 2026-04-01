@@ -1,32 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600&display=swap");
 
-/* Color Palette */
-:root {
-  --navy:          #07091a;
-  --navy-mid:      #0d1133;
-  --navy-light:    #141a45;
-  --navy-card:     #111538;
-  --navy-border:   #1e2554;
-
-  --light-blue:    #89d4f5;
-  --light-blue-dim:#4da8d4;
-  --lavender:      #c4aff5;
-  --lavender-dim:  #9b82d4;
-  --pale-pink:     #f5b8d0;
-  --pale-pink-dim: #d488a8;
-
-  --text-primary:  #e8eeff;
-  --text-muted:    #8892c0;
-
-  --glow-blue:     0 0 18px rgba(137, 212, 245, 0.35);
-  --glow-lavender: 0 0 18px rgba(196, 175, 245, 0.35);
-  --glow-pink:     0 0 18px rgba(245, 184, 208, 0.35);
-
-  --transition:    0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --radius:        12px;
-}
-
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -39,14 +15,22 @@ html {
 body {
   background-color: var(--navy);
   color: var(--text-primary);
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   font-weight: 400;
   line-height: 1.6;
   min-height: 100vh;
   /* Subtle star-field noise texture */
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(137, 212, 245, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(196, 175, 245, 0.06) 0%, transparent 60%);
+    radial-gradient(
+      ellipse 80% 50% at 50% -20%,
+      rgba(137, 212, 245, 0.08) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 80% 110%,
+      rgba(196, 175, 245, 0.06) 0%,
+      transparent 60%
+    );
 }
 
 .layout {
@@ -60,7 +44,11 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 2.5rem 2rem 1.5rem;
-  background: linear-gradient(180deg, rgba(13, 17, 51, 0.95) 0%, rgba(7, 9, 26, 0) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(13, 17, 51, 0.95) 0%,
+    rgba(7, 9, 26, 0) 100%
+  );
   position: sticky;
   top: 0;
   z-index: 100;
@@ -69,7 +57,7 @@ body {
 }
 
 .site-title {
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   font-size: clamp(2.2rem, 5vw, 3.8rem);
   font-weight: 700;
   letter-spacing: 0.25em;
@@ -93,8 +81,14 @@ body {
 }
 
 @keyframes titleFadeIn {
-  from { opacity: 0; transform: translateY(-12px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ─── Navigation ────────────────────────────────────────────────── */
@@ -109,7 +103,7 @@ body {
 .nav-link {
   color: var(--text-muted);
   text-decoration: none;
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -138,7 +132,7 @@ body {
 }
 
 .section-title {
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.2em;
@@ -150,7 +144,7 @@ body {
 }
 
 .section-title::after {
-  content: '';
+  content: "";
   flex: 1;
   height: 1px;
   background: linear-gradient(90deg, currentColor 0%, transparent 100%);

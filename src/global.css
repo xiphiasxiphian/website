@@ -6,14 +6,31 @@
  *
  */
 
+/* Color Palette */
+
 :root {
-  --qwik-dark-blue: #006ce9;
-  --qwik-light-blue: #18b6f6;
-  --qwik-light-purple: #ac7ff4;
-  --qwik-dark-purple: #713fc2;
-  --qwik-dirty-black: #1d2033;
-  --qwik-dark-background: #151934;
-  --qwik-dark-text: #ffffff;
+  --navy: #07091a;
+  --navy-mid: #0d1133;
+  --navy-light: #141a45;
+  --navy-card: #111538;
+  --navy-border: #1e2554;
+
+  --light-blue: #89d4f5;
+  --light-blue-dim: #4da8d4;
+  --lavender: #c4aff5;
+  --lavender-dim: #9b82d4;
+  --pale-pink: #f5b8d0;
+  --pale-pink-dim: #d488a8;
+
+  --text-primary: #e8eeff;
+  --text-muted: #8892c0;
+
+  --glow-blue: 0 0 18px rgba(137, 212, 245, 0.35);
+  --glow-lavender: 0 0 18px rgba(196, 175, 245, 0.35);
+  --glow-pink: 0 0 18px rgba(245, 184, 208, 0.35);
+
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --radius: 12px;
 }
 
 html {

@@ -26,12 +26,19 @@
 
 .carousel-card {
   display: flex;
-  flex: 0 0 calc(100% / var(--visible-count, 3) - (1rem * (var(--visible-count, 3) - 1) / var(--visible-count, 3)));
+  flex: 0 0
+    calc(
+      100% / var(--visible-count, 3) -
+        (1rem * (var(--visible-count, 3) - 1) / var(--visible-count, 3))
+    );
   background: var(--navy-card);
   border: 1px solid var(--navy-border);
   border-radius: var(--radius);
   padding: 1.5rem;
-  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    border-color var(--transition);
   cursor: default;
   min-height: 160px;
   flex-direction: column;
@@ -48,7 +55,7 @@
 }
 
 .carousel-card .card-title {
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   font-weight: 600;
   font-size: 0.95rem;
   letter-spacing: 0.04em;
@@ -62,19 +69,25 @@
   flex: 1;
 }
 
-.carousel-section.projects .section-title { color: var(--light-blue); }
+.carousel-section.projects .section-title {
+  color: var(--light-blue);
+}
 .carousel-section.projects .carousel-card:hover {
   border-color: rgba(137, 212, 245, 0.4);
   box-shadow: var(--glow-blue);
 }
 
-.carousel-section.skills .section-title   { color: var(--lavender); }
+.carousel-section.skills .section-title {
+  color: var(--lavender);
+}
 .carousel-section.skills .carousel-card:hover {
   border-color: rgba(196, 175, 245, 0.4);
   box-shadow: var(--glow-lavender);
 }
 
-.carousel-section.languages .section-title { color: var(--pale-pink); }
+.carousel-section.languages .section-title {
+  color: var(--pale-pink);
+}
 .carousel-section.languages .carousel-card:hover {
   border-color: rgba(245, 184, 208, 0.4);
   box-shadow: var(--glow-pink);
@@ -132,9 +145,15 @@
   border-radius: 3px;
 }
 
-.carousel-section.projects  .carousel-dot.active { background: var(--light-blue); }
-.carousel-section.skills    .carousel-dot.active { background: var(--lavender); }
-.carousel-section.languages .carousel-dot.active { background: var(--pale-pink); }
+.carousel-section.projects .carousel-dot.active {
+  background: var(--light-blue);
+}
+.carousel-section.skills .carousel-dot.active {
+  background: var(--lavender);
+}
+.carousel-section.languages .carousel-dot.active {
+  background: var(--pale-pink);
+}
 
 @media (max-width: 700px) {
   .carousel-card {

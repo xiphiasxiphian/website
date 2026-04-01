@@ -1,13 +1,13 @@
-import { component$, Slot } from '@builder.io/qwik';
-import { Link, useLocation } from '@builder.io/qwik-city';
-import './styles.css';
+import { component$, Slot } from "@builder.io/qwik";
+import { Link, useLocation } from "@builder.io/qwik-city";
+import "./styles.css";
 
 const NAV_LINKS: { label: string; href: string }[] = [
-  { label: 'Home',        href: '/'         },
-  { label: 'About Me',    href: '/about'     },
-  { label: 'My Projects', href: '/projects'  },
-  { label: 'My Skills',   href: '/skills'    },
-  { label: 'Contact',     href: '/contact'   },
+  { label: "Home", href: "/" },
+  { label: "About Me", href: "/about" },
+  { label: "My Projects", href: "/projects" },
+  { label: "My Skills", href: "/skills" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default component$(() => {
@@ -26,7 +26,7 @@ export default component$(() => {
               key={href}
               href={href}
               class="nav-link"
-              data-active={loc.url.pathname === href ? '' : undefined}
+              data-active={loc.url.pathname === href ? "" : undefined}
             >
               {label}
             </Link>
@@ -38,9 +38,7 @@ export default component$(() => {
         <Slot />
       </main>
 
-      <footer class="footer">
-        © {new Date().getFullYear()} Siaphix
-      </footer>
+      <footer class="footer">© {new Date().getFullYear()} Siaphix</footer>
     </div>
   );
 });
