@@ -1,0 +1,147 @@
+use wgpu::{BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingType, BufferUsages, ColorWrites, CommandEncoderDescriptor, Device, FragmentState, MultisampleState, Operations, PipelineLayoutDescriptor, PrimitiveState, Queue, RenderPassColorAttachment, RenderPassDescriptor, RenderPipeline, RenderPipelineDescriptor, ShaderStages, TextureFormat, TextureView, VertexState, include_wgsl, util::{BufferInitDescriptor, DeviceExt}};
+
+use crate::renderer::{mesh::Mesh, texture::Texture, vertex::Vertex};
+
+pub mod texture;
+pub mod vertex;
+pub mod mesh;
+
+pub trait Renderable
+{
+    fn mesh(&self) -> Mesh;
+    fn texture(&self) -> &Texture;
+}
+
+pub struct Renderer
+{
+    pub texture_bind_group_layout: BindGroupLayout,
+    pipeline: RenderPipeline,
+}
+
+impl Renderer
+{
+    pub fn new(
+        device: &Device,
+        surface_format: TextureFormat,
+    ) -> Self
+    {
+        let texture_bind_group_layout =
+            device.create_bind_group_layout(&BindGroupLayoutDescriptor {
+                label: Some("texture_bind_group_layout"),
+                entries: &[
+                    BindGroupLayoutEntry {
+                        binding: 0,
+                        visibility: ShaderStages::FRAGMENT,
+                        ty: BindingType::Texture {
+                            multisampled: false,
+                            view_dimension: wgpu::TextureViewDimension::D2,
+                            sample_type: wgpu::TextureSampleType::Float { filterable: true },
+                        },
+                        count: None,
+                    },
+                    BindGroupLayoutEntry {
+                        binding: 1,
+                        visibility: ShaderStages::FRAGMENT,
+                        ty: BindingType::Sampler(wgpu::SamplerBindingType::Filtering),
+                        count: None,
+                    },
+                ]
+            });
+
+        let shader = device.create_shader_module(include_wgsl!("../../assets/shaders/shader.wgsl"));
+
+        let pipeline_layout = device.create_pipeline_layout(&PipelineLayoutDescriptor {
+            label: Some("render_pipeline_layout"),
+            bind_group_layouts: &[&texture_bind_group_layout],
+            push_constant_ranges: &[],
+        });
+
+        let pipeline = device.create_render_pipeline(&RenderPipelineDescriptor {
+            label: Some("render_pipeline"),
+            layout: Some(&pipeline_layout),
+            vertex: VertexState {
+                module: &shader,
+                entry_point: Some("vs_main"),
+                buffers: &[Vertex::layout()],
+                compilation_options: Default::default(),
+            },
+            fragment: Some(FragmentState {
+                module: &shader,
+                entry_point: Some("fs_main"),
+                compilation_options: Default::default(),
+                targets: &[Some(wgpu::ColorTargetState {
+                    format: surface_format,
+                    blend: Some(wgpu::BlendState::ALPHA_BLENDING),
+                    write_mask: ColorWrites::ALL,
+                })],
+            }),
+            primitive: PrimitiveState {
+                topology: wgpu::PrimitiveTopology::TriangleList,
+                strip_index_format: None,
+                front_face: wgpu::FrontFace::Ccw,
+                cull_mode: Some(wgpu::Face::Back),
+                ..Default::default()
+            },
+            depth_stencil: None,
+            multisample: MultisampleState::default(),
+            multiview: None,
+            cache: None,
+        });
+
+        Self {
+            texture_bind_group_layout,
+            pipeline,
+        }
+    }
+
+    pub fn draw(
+        &self,
+        renderables: &[Box<dyn Renderable>],
+        device: &Device,
+        queue: &Queue,
+        view: &TextureView,
+    )
+    {
+        let mut encoder = device.create_command_encoder(&CommandEncoderDescriptor { label: Some("render_encoder") });
+
+        {
+            let mut pass = encoder.begin_render_pass(&RenderPassDescriptor {
+                label: Some("render_pass"),
+                color_attachments: &[Some(RenderPassColorAttachment {
+                    view,
+                    resolve_target: None,
+                    ops: Operations {
+                        load: wgpu::LoadOp::Clear(wgpu::Color::BLACK),
+                        store: wgpu::StoreOp::Store,
+                    },
+                })],
+                depth_stencil_attachment: None,
+                timestamp_writes: None,
+                occlusion_query_set: None,
+            });
+
+            pass.set_pipeline(&self.pipeline);
+
+            for renderable in renderables
+            {
+                let mesh = renderable.mesh();
+                let texture = renderable.texture();
+
+                let vertex_buffer = device.create_buffer_init(&BufferInitDescriptor {
+                    label: Some("vertex_buffer"),
+                    contents: bytemuck::cast_slice(&mesh.vertices),
+                    usage: BufferUsages::VERTEX,
+                });
+                let index_buffer = device.create_buffer_init(&BufferInitDescriptor {
+                    label: Some("index_buffer"),
+                    contents: bytemuck::cast_slice(&mesh.indices),
+                    usage: BufferUsages::INDEX,
+                });
+
+                pass.set_bind_group(0, &texture.bind_group, &[]);
+                pass.set_vertex_buffer(0, vertex_buffer.slice(..));
+                pass.set_index_buffer(index_buffer.slice(..), wgpu::IndexFormat::Uint16);
+            }
+        }
+    }
+}
