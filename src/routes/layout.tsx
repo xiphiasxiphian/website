@@ -4,10 +4,10 @@ import "./styles.css";
 
 const NAV_LINKS: { label: string; href: string }[] = [
   { label: "Home", href: "/" },
-  { label: "About Me", href: "/about" },
-  { label: "My Projects", href: "/projects" },
-  { label: "My Skills", href: "/skills" },
-  { label: "Contact", href: "/contact" },
+  { label: "TODO", href: "/about" },
+  { label: "TODO", href: "/projects" },
+  { label: "TODO", href: "/skills" },
+  { label: "TODO", href: "/contact" },
 ];
 
 export default component$(() => {
