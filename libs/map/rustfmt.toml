@@ -1,0 +1,5 @@
+brace_style = "AlwaysNextLine"
+control_brace_style = "AlwaysNextLine"
+group_imports = "StdExternalCrate"
+trailing_comma = "Vertical"
+max_width = 120
