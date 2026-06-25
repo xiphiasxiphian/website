@@ -1,31 +1,11 @@
 mod util;
+mod renderer;
 mod canvas;
 
 use log::info;
 use wasm_bindgen::prelude::*;
-use wasm_bindgen::JsCast;
-use web_sys::{HtmlCanvasElement};
-use wgpu::MemoryHints;
-use wgpu::PowerPreference;
-use wgpu::{
-    Instance,
-    SurfaceTarget,
-    RequestAdapterOptions,
-    DeviceDescriptor,
-    Limits,
-    SurfaceConfiguration,
-    TextureUsages,
-    PresentMode,
-    CommandEncoderDescriptor,
-    RenderPassDescriptor,
-    RenderPassColorAttachment,
-    Operations,
-    LoadOp,
-    StoreOp,
-};
 
 use crate::canvas::Canvas;
-use crate::util::color::Color;
 
 #[wasm_bindgen(start)]
 pub fn main_js() -> Result<(), JsValue>
