@@ -13,6 +13,9 @@ itertools = "0.15.0"
 log = "0.4.33"
 console_log = "1.0.0"
 console_error_panic_hook = "0.1.7"
+wasm-bindgen-futures = "0.4.76"
+
+wgpu = { version = "23.0", features = ["webgl"] }
 
 [dependencies.web-sys]
 version = "0.3"

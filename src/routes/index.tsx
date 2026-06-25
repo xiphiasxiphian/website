@@ -5,10 +5,9 @@ export default component$(() => {
 
   useVisibleTask$(async () => {
     try {
-      // 1. Initialize the WebAssembly binary
       await init();
 
-      // 2. Hand control of the canvas over to Rust
+      // canvas handover
       start_map_engine('map-canvas');
 
       console.log("WASM WebGL Engine Running!");
@@ -24,7 +23,7 @@ export default component$(() => {
       </header>
 
       {/* The WebGL Canvas powered by Rust */}
-      <main style={{ flexGrow: 1, backgroundColor: '#000' }}>
+      <main style={{ flexGrow: 1 }}>
         <canvas
           id="map-canvas"
           width={1024}

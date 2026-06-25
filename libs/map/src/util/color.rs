@@ -28,12 +28,21 @@ impl Color
         )
     }
 
-    pub fn to_floats(&self) -> (f32, f32, f32, f32)
+    pub fn to_floats(&self) -> (f64, f64, f64, f64)
     {
         [self.r, self.g, self.b, self.a]
             .iter()
-            .map(|x| (*x as f32 / u8::MAX as f32).clamp(0.0, 1.0))
+            .map(|x| (*x as f64 / u8::MAX as f64).clamp(0.0, 1.0))
             .collect_tuple()
             .expect("")
+    }
+}
+
+impl From<Color> for wgpu::Color
+{
+    fn from(value: Color) -> Self
+    {
+        let (r, g, b, a) = value.to_floats();
+        Self { r, g, b, a }
     }
 }
