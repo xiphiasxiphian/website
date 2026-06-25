@@ -1,4 +1,5 @@
 use log::info;
+use log::warn;
 use wasm_bindgen::JsCast;
 use web_sys::HtmlCanvasElement;
 use wgpu::Adapter;
@@ -13,6 +14,8 @@ use wgpu::{
     SurfaceTarget, TextureUsages,
 };
 
+use crate::renderer::Renderable;
+use crate::renderer::Renderer;
 use crate::util::color::Color;
 
 pub struct Canvas<'a>
@@ -23,6 +26,8 @@ pub struct Canvas<'a>
     adapter: Adapter,
     device: Device,
     queue: Queue,
+    renderer: Renderer,
+    scene: Vec<Box<dyn Renderable>> // tmp will have an actual Scene type later
 }
 
 impl<'a> Canvas<'a>
@@ -82,6 +87,9 @@ impl<'a> Canvas<'a>
 
         info!("Succesfully attached wgpu to canvas");
 
+        let renderer = Renderer::new(&device, surface_format);
+        info!("Succesfully init renderer");
+
         Self {
             dims: (canvas_width, canvas_height),
             instance,
@@ -89,6 +97,8 @@ impl<'a> Canvas<'a>
             surface,
             device,
             queue,
+            renderer,
+            scene: vec![],
         }
     }
 
@@ -104,36 +114,14 @@ impl<'a> Canvas<'a>
                 Ok(texture) => texture,
                 Err(e) =>
                 {
-                    log::warn!("Surface texture dropped: {:?}", e);
+                    warn!("Surface texture dropped: {:?}", e);
                     continue;
                 }
             };
 
             let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
-            let mut encoder = self.device.create_command_encoder(&CommandEncoderDescriptor {
-                label: Some("Render Encoder"),
-            });
+            self.renderer.draw(&self.scene, &self.device, &self.queue, &view);
 
-            let color: wgpu::Color = Color::from_hex("c4aff5", u8::MAX).unwrap().into();
-
-            {
-                let _render_pass = encoder.begin_render_pass(&RenderPassDescriptor {
-                    label: Some("Render Pass"),
-                    color_attachments: &[Some(RenderPassColorAttachment {
-                        view: &view,
-                        resolve_target: None,
-                        ops: Operations {
-                            load: LoadOp::Clear(color),
-                            store: StoreOp::Store,
-                        },
-                    })],
-                    depth_stencil_attachment: None,
-                    timestamp_writes: None,
-                    occlusion_query_set: None,
-                });
-            } // render pass dropped here, releasing the encoder borrow
-
-            self.queue.submit(std::iter::once(encoder.finish()));
             output.present();
         }
     }
