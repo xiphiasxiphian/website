@@ -1,3 +1,4 @@
+use log::info;
 use wgpu::{
     BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingType, BufferUsages, ColorWrites,
     CommandEncoderDescriptor, Device, FragmentState, MultisampleState, Operations, PipelineLayoutDescriptor,

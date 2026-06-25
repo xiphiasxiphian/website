@@ -16,7 +16,8 @@ use wgpu::{
 
 use crate::renderer::Renderable;
 use crate::renderer::Renderer;
-use crate::util::color::Color;
+use crate::renderer::texture::Sprite;
+use crate::renderer::texture::Texture;
 
 pub struct Canvas<'a>
 {
@@ -104,6 +105,16 @@ impl<'a> Canvas<'a>
 
     pub async fn run(&mut self)
     {
+        let texture = Texture::from_bytes(
+            include_bytes!("../assets/images/loki_purple.png"),
+            &self.device,
+            &self.queue,
+            &self.renderer.texture_bind_group_layout,
+        ).unwrap();
+
+        let sprite = Box::new(Sprite::new(texture, (-0.5, 0.5), (1.0, 1.0)));
+        self.scene.push(sprite);
+
         // main render loop
         loop
         {

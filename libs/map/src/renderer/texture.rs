@@ -7,6 +7,8 @@ use wgpu::{
     TextureUsages, TextureView, TextureViewDescriptor,
 };
 
+use crate::renderer::{Renderable, mesh::Mesh};
+
 pub struct Texture
 {
     pub texture_size: Extent3d,
@@ -68,7 +70,7 @@ impl Texture
         let sampler = device.create_sampler(&SamplerDescriptor {
             address_mode_u: wgpu::AddressMode::ClampToEdge,
             address_mode_v: wgpu::AddressMode::ClampToEdge,
-            mag_filter: wgpu::FilterMode::Linear,
+            mag_filter: wgpu::FilterMode::Nearest,
             min_filter: wgpu::FilterMode::Nearest,
             ..Default::default()
         });
@@ -114,4 +116,30 @@ impl Texture
         let image = image::load_from_memory(bytes)?;
         Self::from_image(&image, device, queue, layout)
     }
+}
+
+// This will probably get moved later
+pub struct Sprite
+{
+    texture: Texture,
+    loc: (f32, f32),
+    dims: (f32, f32)
+}
+
+impl Sprite
+{
+    pub fn new(texture: Texture, location: (f32, f32), dimensions: (f32, f32)) -> Self
+    {
+        Self {
+            texture,
+            loc: location,
+            dims: dimensions,
+        }
+    }
+}
+
+impl Renderable for Sprite
+{
+    fn mesh(&self) -> Mesh { Mesh::quad(self.loc.0, self.loc.1, self.dims.0, self.dims.1) }
+    fn texture(&self) -> &Texture { &self.texture }
 }
