@@ -12,9 +12,7 @@ impl Color
 {
     pub fn new(r: u8, g: u8, b: u8, a: u8) -> Self
     {
-        Self {
-            r, g, b, a
-        }
+        Self { r, g, b, a }
     }
 
     pub fn from_hex(code: &str, a: u8) -> Option<Self>
@@ -23,9 +21,7 @@ impl Color
         let g = u8::from_str_radix(code.get(2..4)?, 16).ok()?;
         let b = u8::from_str_radix(code.get(4..6)?, 16).ok()?;
 
-        Some(
-            Self { r, g, b, a }
-        )
+        Some(Self { r, g, b, a })
     }
 
     pub fn to_floats(&self) -> (f64, f64, f64, f64)

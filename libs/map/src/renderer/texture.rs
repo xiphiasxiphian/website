@@ -1,7 +1,11 @@
 use std::path::Path;
 
 use image::{DynamicImage, GenericImageView, ImageError};
-use wgpu::{BindGroup, BindGroupDescriptor, BindGroupEntry, BindGroupLayout, BindingResource, Device, Extent3d, ImageCopyTexture, ImageDataLayout, Queue, Sampler, SamplerDescriptor, TextureDescriptor, TextureFormat, TextureUsages, TextureView, TextureViewDescriptor};
+use wgpu::{
+    BindGroup, BindGroupDescriptor, BindGroupEntry, BindGroupLayout, BindingResource, Device, Extent3d,
+    ImageCopyTexture, ImageDataLayout, Queue, Sampler, SamplerDescriptor, TextureDescriptor, TextureFormat,
+    TextureUsages, TextureView, TextureViewDescriptor,
+};
 
 pub struct Texture
 {
@@ -73,20 +77,28 @@ impl Texture
             label: Some("diffuse_bind_group"),
             layout,
             entries: &[
-                BindGroupEntry { binding: 0, resource: BindingResource::TextureView(&view) },
-                BindGroupEntry { binding: 1, resource: BindingResource::Sampler(&sampler) },
+                BindGroupEntry {
+                    binding: 0,
+                    resource: BindingResource::TextureView(&view),
+                },
+                BindGroupEntry {
+                    binding: 1,
+                    resource: BindingResource::Sampler(&sampler),
+                },
             ],
         });
 
-        Ok(Self { texture_size, texture: diffuse_texture, view, sampler, bind_group })
+        Ok(Self {
+            texture_size,
+            texture: diffuse_texture,
+            view,
+            sampler,
+            bind_group,
+        })
     }
 
-    pub fn from_path(
-        path: &Path,
-        device: &Device,
-        queue: &Queue,
-        layout: &BindGroupLayout,
-    ) -> Result<Self, ImageError>
+    pub fn from_path(path: &Path, device: &Device, queue: &Queue, layout: &BindGroupLayout)
+    -> Result<Self, ImageError>
     {
         let image = image::open(path)?;
         Self::from_image(&image, device, queue, layout)

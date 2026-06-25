@@ -1,10 +1,16 @@
-use wgpu::{BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingType, BufferUsages, ColorWrites, CommandEncoderDescriptor, Device, FragmentState, MultisampleState, Operations, PipelineLayoutDescriptor, PrimitiveState, Queue, RenderPassColorAttachment, RenderPassDescriptor, RenderPipeline, RenderPipelineDescriptor, ShaderStages, TextureFormat, TextureView, VertexState, include_wgsl, util::{BufferInitDescriptor, DeviceExt}};
+use wgpu::{
+    BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingType, BufferUsages, ColorWrites,
+    CommandEncoderDescriptor, Device, FragmentState, MultisampleState, Operations, PipelineLayoutDescriptor,
+    PrimitiveState, Queue, RenderPassColorAttachment, RenderPassDescriptor, RenderPipeline, RenderPipelineDescriptor,
+    ShaderStages, TextureFormat, TextureView, VertexState, include_wgsl,
+    util::{BufferInitDescriptor, DeviceExt},
+};
 
 use crate::renderer::{mesh::Mesh, texture::Texture, vertex::Vertex};
 
+pub mod mesh;
 pub mod texture;
 pub mod vertex;
-pub mod mesh;
 
 pub trait Renderable
 {
@@ -20,33 +26,29 @@ pub struct Renderer
 
 impl Renderer
 {
-    pub fn new(
-        device: &Device,
-        surface_format: TextureFormat,
-    ) -> Self
+    pub fn new(device: &Device, surface_format: TextureFormat) -> Self
     {
-        let texture_bind_group_layout =
-            device.create_bind_group_layout(&BindGroupLayoutDescriptor {
-                label: Some("texture_bind_group_layout"),
-                entries: &[
-                    BindGroupLayoutEntry {
-                        binding: 0,
-                        visibility: ShaderStages::FRAGMENT,
-                        ty: BindingType::Texture {
-                            multisampled: false,
-                            view_dimension: wgpu::TextureViewDimension::D2,
-                            sample_type: wgpu::TextureSampleType::Float { filterable: true },
-                        },
-                        count: None,
+        let texture_bind_group_layout = device.create_bind_group_layout(&BindGroupLayoutDescriptor {
+            label: Some("texture_bind_group_layout"),
+            entries: &[
+                BindGroupLayoutEntry {
+                    binding: 0,
+                    visibility: ShaderStages::FRAGMENT,
+                    ty: BindingType::Texture {
+                        multisampled: false,
+                        view_dimension: wgpu::TextureViewDimension::D2,
+                        sample_type: wgpu::TextureSampleType::Float { filterable: true },
                     },
-                    BindGroupLayoutEntry {
-                        binding: 1,
-                        visibility: ShaderStages::FRAGMENT,
-                        ty: BindingType::Sampler(wgpu::SamplerBindingType::Filtering),
-                        count: None,
-                    },
-                ]
-            });
+                    count: None,
+                },
+                BindGroupLayoutEntry {
+                    binding: 1,
+                    visibility: ShaderStages::FRAGMENT,
+                    ty: BindingType::Sampler(wgpu::SamplerBindingType::Filtering),
+                    count: None,
+                },
+            ],
+        });
 
         let shader = device.create_shader_module(include_wgsl!("../../assets/shaders/shader.wgsl"));
 
@@ -94,15 +96,11 @@ impl Renderer
         }
     }
 
-    pub fn draw(
-        &self,
-        renderables: &[Box<dyn Renderable>],
-        device: &Device,
-        queue: &Queue,
-        view: &TextureView,
-    )
+    pub fn draw(&self, renderables: &[Box<dyn Renderable>], device: &Device, queue: &Queue, view: &TextureView)
     {
-        let mut encoder = device.create_command_encoder(&CommandEncoderDescriptor { label: Some("render_encoder") });
+        let mut encoder = device.create_command_encoder(&CommandEncoderDescriptor {
+            label: Some("render_encoder"),
+        });
 
         {
             let mut pass = encoder.begin_render_pass(&RenderPassDescriptor {
@@ -141,7 +139,10 @@ impl Renderer
                 pass.set_bind_group(0, &texture.bind_group, &[]);
                 pass.set_vertex_buffer(0, vertex_buffer.slice(..));
                 pass.set_index_buffer(index_buffer.slice(..), wgpu::IndexFormat::Uint16);
+                pass.draw_indexed(0..mesh.indices.len() as u32, 0, 0..1);
             }
         }
+
+        queue.submit(std::iter::once(encoder.finish()));
     }
 }
