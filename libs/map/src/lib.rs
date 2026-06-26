@@ -13,7 +13,7 @@ pub fn main_js() -> Result<(), JsValue>
     console_log::init_with_level(log::Level::Debug).map_err(|e| JsValue::from_str(&e.to_string()))?;
     std::panic::set_hook(Box::new(console_error_panic_hook::hook));
 
-    info!("WASM Module Loaded Successfully");
+    info!("Map WASM Module Loaded Successfully");
     Ok(())
 }
 

@@ -16,8 +16,14 @@ export default component$(() => {
     }
   });
 
+  const width = 1024;
+  const height = 768;
+
+  const width_string = `${width}px`;
+  const height_string = `${height}px`;
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', margin: 0 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', width: width_string, height: height_string, margin: 0 }}>
       <header style={{ padding: '20px', background: '#333', color: 'white' }}>
         <h1>Test</h1>
       </header>
@@ -26,9 +32,9 @@ export default component$(() => {
       <main style={{ flexGrow: 1 }}>
         <canvas
           id="map-canvas"
-          width={1024}
-          height={768}
-          style={{ width: '100%', height: '100%', display: 'block' }}
+          width={width}
+          height={height}
+          style={{ width: width_string, height: height_string, display: 'block' }}
         ></canvas>
       </main>
     </div>

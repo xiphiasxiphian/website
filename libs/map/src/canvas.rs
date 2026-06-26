@@ -43,6 +43,8 @@ impl<'a> Canvas<'a>
         let canvas_width = canvas.width();
         let canvas_height = canvas.height();
 
+        info!("Attempting to attach {}x{} canvas", canvas_width, canvas_height);
+
         let instance = Instance::default();
         let surface = instance.create_surface(SurfaceTarget::Canvas(canvas)).unwrap();
 
@@ -106,13 +108,13 @@ impl<'a> Canvas<'a>
     pub async fn run(&mut self)
     {
         let texture = Texture::from_bytes(
-            include_bytes!("../assets/images/loki_purple.png"),
+            include_bytes!("../assets/images/grass.png"),
             &self.device,
             &self.queue,
             &self.renderer.texture_bind_group_layout,
         ).unwrap();
 
-        let sprite = Box::new(Sprite::new(texture, (-0.5, 0.5), (1.0, 1.0)));
+        let sprite = Box::new(Sprite::new(texture, (100.0, 100.0), (200.0, 200.0)));
         self.scene.push(sprite);
 
         // main render loop
@@ -131,7 +133,7 @@ impl<'a> Canvas<'a>
             };
 
             let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
-            self.renderer.draw(&self.scene, &self.device, &self.queue, &view);
+            self.renderer.draw(&self.scene, &self.device, &self.queue, &view, (self.dims.0 as f32, self.dims.1 as f32));
 
             output.present();
         }
