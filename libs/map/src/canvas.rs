@@ -5,6 +5,7 @@ use log::info;
 use log::warn;
 use wasm_bindgen::JsCast;
 use web_sys::HtmlCanvasElement;
+use web_sys::Window;
 use wgpu::Adapter;
 use wgpu::Device;
 use wgpu::MemoryHints;
@@ -17,6 +18,7 @@ use wgpu::{
     SurfaceTarget, TextureUsages,
 };
 
+use crate::clock::Clock;
 use crate::input::InputState;
 use crate::input::key::Key;
 use crate::renderer::Renderable;
@@ -26,6 +28,8 @@ use crate::renderer::texture::Texture;
 
 pub struct Canvas<'a>
 {
+    window: Window,
+
     // internal gpu info
     dims: (u32, u32),
     instance: Instance,
@@ -37,7 +41,7 @@ pub struct Canvas<'a>
     // user level
     renderer: Renderer,
     scene: Vec<Box<dyn Renderable>>, // tmp will have an actual Scene type later
-    input: Rc<RefCell<InputState>>
+    input: Rc<RefCell<InputState>>,
 }
 
 impl<'a> Canvas<'a>
@@ -108,6 +112,7 @@ impl<'a> Canvas<'a>
         info!("Succesfully init renderer");
 
         Self {
+            window,
             dims: (canvas_width, canvas_height),
             instance,
             adapter,
@@ -132,10 +137,14 @@ impl<'a> Canvas<'a>
         let sprite = Box::new(Sprite::new(texture, (100.0, 100.0), (200.0, 200.0)));
         self.scene.push(sprite);
 
+        let mut clock = Clock::new(&self.window)
+            .expect("Failed to init clock");
+
         // main render loop
         loop
         {
             Self::next_animation_frame().await;
+            let dt = clock.tick();
 
             let output = match self.surface.get_current_texture()
             {

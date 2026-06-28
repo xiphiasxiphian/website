@@ -30,6 +30,7 @@ features = [
   "WebGlRenderingContext",
   "Window",
   "console",
+  "Performance",
   "MouseEvent",
   "KeyboardEvent"
 ]
