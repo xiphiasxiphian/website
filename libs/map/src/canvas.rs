@@ -18,6 +18,7 @@ use wgpu::{
 };
 
 use crate::input::InputState;
+use crate::input::key::Key;
 use crate::renderer::Renderable;
 use crate::renderer::Renderer;
 use crate::renderer::texture::Sprite;
@@ -150,6 +151,7 @@ impl<'a> Canvas<'a>
             self.renderer.draw(&self.scene, &self.device, &self.queue, &view, (self.dims.0 as f32, self.dims.1 as f32));
 
             output.present();
+            self.input.borrow_mut().flush();
         }
     }
 
