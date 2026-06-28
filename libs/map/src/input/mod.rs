@@ -140,5 +140,38 @@ impl InputState
         }
     }
 
+    pub fn is_key_down(&self, key: Key) -> bool
+    {
+        self.keys_down[key as usize]
+    }
 
+    pub fn is_key_up(&self, key: Key) -> bool
+    {
+        self.keys_up[key as usize]
+    }
+
+    pub fn is_key_held(&self, key: Key) -> bool
+    {
+        self.keys_held[key as usize]
+    }
+
+    pub fn is_mouse_button_down(&self, button: MouseButton) -> bool
+    {
+        self.mouse_down[button as usize]
+    }
+
+    pub fn is_mouse_button_up(&self, button: MouseButton) -> bool
+    {
+        self.mouse_up[button as usize]
+    }
+
+    pub fn mouse_pos(&self) -> (i32, i32)
+    {
+        self.mouse_pos
+    }
+
+    pub fn mouse_delta(&self) -> (i32, i32)
+    {
+        self.mouse_delta
+    }
 }
