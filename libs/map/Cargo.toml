@@ -18,6 +18,7 @@ wasm-bindgen-futures = "0.4.76"
 wgpu = { version = "23.0", features = ["webgl"] }
 image = "0.25.10"
 bytemuck = { version = "1.25.0", features = ["derive"] }
+strum = { version = "0.28.0", features = ["derive"] }
 
 [dependencies.web-sys]
 version = "0.3"
