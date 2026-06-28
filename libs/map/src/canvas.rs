@@ -13,14 +13,12 @@ use wgpu::PowerPreference;
 use wgpu::Queue;
 use wgpu::Surface;
 use wgpu::{
-    CommandEncoderDescriptor, DeviceDescriptor, Instance, Limits, LoadOp, Operations, PresentMode,
-    RenderPassColorAttachment, RenderPassDescriptor, RequestAdapterOptions, StoreOp, SurfaceConfiguration,
-    SurfaceTarget, TextureUsages,
+    DeviceDescriptor, Instance, Limits, PresentMode, RequestAdapterOptions, SurfaceConfiguration, SurfaceTarget,
+    TextureUsages,
 };
 
 use crate::clock::Clock;
 use crate::input::InputState;
-use crate::input::key::Key;
 use crate::renderer::Renderable;
 use crate::renderer::Renderer;
 use crate::renderer::texture::Sprite;
@@ -57,7 +55,9 @@ impl<'a> Canvas<'a>
         InputState::attach_listeners(input.clone(), &mut window, element.as_ref());
         info!("Successfully init input state and attached listeners");
 
-        let canvas: HtmlCanvasElement = element.dyn_into::<HtmlCanvasElement>().expect("Element is not a canvas");
+        let canvas: HtmlCanvasElement = element
+            .dyn_into::<HtmlCanvasElement>()
+            .expect("Element is not a canvas");
         let canvas_width = canvas.width();
         let canvas_height = canvas.height();
 
@@ -132,19 +132,19 @@ impl<'a> Canvas<'a>
             &self.device,
             &self.queue,
             &self.renderer.texture_bind_group_layout,
-        ).unwrap();
+        )
+        .unwrap();
 
         let sprite = Box::new(Sprite::new(texture, (100.0, 100.0), (200.0, 200.0)));
         self.scene.push(sprite);
 
-        let mut clock = Clock::new(&self.window)
-            .expect("Failed to init clock");
+        let mut clock = Clock::new(&self.window).expect("Failed to init clock");
 
         // main render loop
         loop
         {
             Self::next_animation_frame().await;
-            let dt = clock.tick();
+            let _dt = clock.tick();
 
             let output = match self.surface.get_current_texture()
             {
@@ -157,7 +157,13 @@ impl<'a> Canvas<'a>
             };
 
             let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
-            self.renderer.draw(&self.scene, &self.device, &self.queue, &view, (self.dims.0 as f32, self.dims.1 as f32));
+            self.renderer.draw(
+                &self.scene,
+                &self.device,
+                &self.queue,
+                &view,
+                (self.dims.0 as f32, self.dims.1 as f32),
+            );
 
             output.present();
             self.input.borrow_mut().flush();

@@ -49,11 +49,7 @@ impl InputState
         self.mouse_up = [false; MouseButton::COUNT];
     }
 
-    pub fn attach_listeners(
-        state: Rc<RefCell<Self>>,
-        window: &mut Window,
-        target: &EventTarget,
-    )
+    pub fn attach_listeners(state: Rc<RefCell<Self>>, window: &mut Window, target: &EventTarget)
     {
         // keydown listener
         {
@@ -68,7 +64,8 @@ impl InputState
                 }
             });
 
-            window.add_event_listener_with_callback("keydown", cb.as_ref().unchecked_ref())
+            window
+                .add_event_listener_with_callback("keydown", cb.as_ref().unchecked_ref())
                 .expect("Failed to attach keydown listener");
 
             info!("Attached keydown listener");
@@ -87,13 +84,13 @@ impl InputState
                 }
             });
 
-            window.add_event_listener_with_callback("keyup", cb.as_ref().unchecked_ref())
+            window
+                .add_event_listener_with_callback("keyup", cb.as_ref().unchecked_ref())
                 .expect("Failed to attach keyup listener");
 
             info!("Attached keyup listener");
             cb.forget();
         }
-
 
         // mousemove listener
         {
@@ -104,7 +101,8 @@ impl InputState
                 s.mouse_pos = (e.offset_x(), e.offset_y());
             });
 
-            window.add_event_listener_with_callback("mousemove", cb.as_ref().unchecked_ref())
+            window
+                .add_event_listener_with_callback("mousemove", cb.as_ref().unchecked_ref())
                 .expect("Failed to attach mousemove listener");
 
             info!("Attached mousemove listener");
@@ -125,7 +123,8 @@ impl InputState
                     s.mouse_down[index] = true;
                 }
             });
-            target.add_event_listener_with_callback("mousedown", cb.as_ref().unchecked_ref())
+            target
+                .add_event_listener_with_callback("mousedown", cb.as_ref().unchecked_ref())
                 .expect("Failed to attach mousedown listener");
 
             info!("Attached mousedown listener");
@@ -146,7 +145,8 @@ impl InputState
                     s.mouse_up[index] = true;
                 }
             });
-            target.add_event_listener_with_callback("mouseup", cb.as_ref().unchecked_ref())
+            target
+                .add_event_listener_with_callback("mouseup", cb.as_ref().unchecked_ref())
                 .expect("Failed to attach mouseup listener");
 
             info!("Attached mouseup listener");

@@ -1,6 +1,10 @@
-use log::info;
 use wgpu::{
-    BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingType, BlendComponent, BlendFactor, BlendOperation, BlendState, BufferUsages, ColorWrites, CommandEncoderDescriptor, Device, FragmentState, MultisampleState, Operations, PipelineLayoutDescriptor, PrimitiveState, Queue, RenderPassColorAttachment, RenderPassDescriptor, RenderPipeline, RenderPipelineDescriptor, ShaderStages, TextureFormat, TextureView, VertexState, include_wgsl, util::{BufferInitDescriptor, DeviceExt},
+    BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingType, BlendComponent, BlendFactor,
+    BlendOperation, BlendState, BufferUsages, ColorWrites, CommandEncoderDescriptor, Device, FragmentState,
+    MultisampleState, Operations, PipelineLayoutDescriptor, PrimitiveState, Queue, RenderPassColorAttachment,
+    RenderPassDescriptor, RenderPipeline, RenderPipelineDescriptor, ShaderStages, TextureFormat, TextureView,
+    VertexState, include_wgsl,
+    util::{BufferInitDescriptor, DeviceExt},
 };
 
 use crate::renderer::{mesh::Mesh, texture::Texture, vertex::Vertex};
@@ -74,12 +78,12 @@ impl Renderer
                         color: BlendComponent {
                             src_factor: BlendFactor::One,
                             dst_factor: BlendFactor::OneMinusSrcAlpha,
-                            operation:  BlendOperation::Add,
+                            operation: BlendOperation::Add,
                         },
                         alpha: BlendComponent {
                             src_factor: BlendFactor::One,
                             dst_factor: BlendFactor::OneMinusSrcAlpha,
-                            operation:  BlendOperation::Add,
+                            operation: BlendOperation::Add,
                         },
                     }),
                     write_mask: ColorWrites::ALL,
@@ -104,7 +108,14 @@ impl Renderer
         }
     }
 
-    pub fn draw(&self, renderables: &[Box<dyn Renderable>], device: &Device, queue: &Queue, view: &TextureView, dims: (f32, f32))
+    pub fn draw(
+        &self,
+        renderables: &[Box<dyn Renderable>],
+        device: &Device,
+        queue: &Queue,
+        view: &TextureView,
+        dims: (f32, f32),
+    )
     {
         let mut encoder = device.create_command_encoder(&CommandEncoderDescriptor {
             label: Some("render_encoder"),

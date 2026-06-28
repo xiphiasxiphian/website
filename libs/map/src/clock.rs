@@ -11,7 +11,7 @@ impl Clock
 {
     pub fn new(window: &Window) -> Option<Self>
     {
-        let performance =  window.performance()?;
+        let performance = window.performance()?;
         let now = performance.now();
 
         Some(Self {

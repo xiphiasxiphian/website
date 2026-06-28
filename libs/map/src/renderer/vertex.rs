@@ -1,4 +1,4 @@
-use wgpu::{BufferAddress, VertexAttribute, VertexBufferLayout};
+use wgpu::VertexBufferLayout;
 
 #[repr(C)]
 #[derive(Copy, Clone, bytemuck::Pod, bytemuck::Zeroable)]
@@ -22,5 +22,5 @@ impl Vertex
             step_mode: wgpu::VertexStepMode::Vertex,
             attributes: &ATTRIBS,
         }
-}
+    }
 }

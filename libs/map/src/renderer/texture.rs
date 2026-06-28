@@ -1,7 +1,6 @@
 use std::path::Path;
 
 use image::{DynamicImage, GenericImageView, ImageError};
-use log::info;
 use wgpu::{
     BindGroup, BindGroupDescriptor, BindGroupEntry, BindGroupLayout, BindingResource, Device, Extent3d,
     ImageCopyTexture, ImageDataLayout, Queue, Sampler, SamplerDescriptor, TextureDescriptor, TextureFormat,
@@ -34,15 +33,18 @@ impl Texture
         let rgba = image.to_rgba8();
         let dims = image.dimensions();
 
-        let premultiplied: Vec<u8> = rgba.pixels().flat_map(|p| {
-            let a = p[3] as f32 / 255.0;
-            [
-                (p[0] as f32 * a) as u8,
-                (p[1] as f32 * a) as u8,
-                (p[2] as f32 * a) as u8,
-                p[3],
-            ]
-        }).collect();
+        let premultiplied: Vec<u8> = rgba
+            .pixels()
+            .flat_map(|p| {
+                let a = p[3] as f32 / 255.0;
+                [
+                    (p[0] as f32 * a) as u8,
+                    (p[1] as f32 * a) as u8,
+                    (p[2] as f32 * a) as u8,
+                    p[3],
+                ]
+            })
+            .collect();
 
         let texture_size = Extent3d {
             width: dims.0,
@@ -134,7 +136,7 @@ pub struct Sprite
 {
     texture: Texture,
     pub loc: (f32, f32),
-    dims: (f32, f32)
+    dims: (f32, f32),
 }
 
 impl Sprite
@@ -156,5 +158,8 @@ impl Renderable for Sprite
         Mesh::quad(self.loc.0, self.loc.1, self.dims.0, self.dims.1, dims)
     }
 
-    fn texture(&self) -> &Texture { &self.texture }
+    fn texture(&self) -> &Texture
+    {
+        &self.texture
+    }
 }
