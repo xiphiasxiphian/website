@@ -28,7 +28,7 @@ export default component$(() => {
         <h1>Test</h1>
       </header>
 
-      {/* The WebGL Canvas powered by Rust */}
+      {/* The WebGL Canvas */}
       <main style={{ flexGrow: 1 }}>
         <canvas
           id="map-canvas"
