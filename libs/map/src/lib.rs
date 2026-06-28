@@ -2,6 +2,7 @@ mod canvas;
 mod renderer;
 mod util;
 mod input;
+mod clock;
 
 use log::info;
 use wasm_bindgen::prelude::*;

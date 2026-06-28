@@ -133,7 +133,7 @@ impl Texture
 pub struct Sprite
 {
     texture: Texture,
-    loc: (f32, f32),
+    pub loc: (f32, f32),
     dims: (f32, f32)
 }
 
