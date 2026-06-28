@@ -1,3 +1,6 @@
+use std::cell::RefCell;
+use std::rc::Rc;
+
 use log::info;
 use log::warn;
 use wasm_bindgen::JsCast;
@@ -14,6 +17,7 @@ use wgpu::{
     SurfaceTarget, TextureUsages,
 };
 
+use crate::input::InputState;
 use crate::renderer::Renderable;
 use crate::renderer::Renderer;
 use crate::renderer::texture::Sprite;
@@ -21,25 +25,34 @@ use crate::renderer::texture::Texture;
 
 pub struct Canvas<'a>
 {
+    // internal gpu info
     dims: (u32, u32),
     instance: Instance,
     surface: Surface<'a>,
     adapter: Adapter,
     device: Device,
     queue: Queue,
+
+    // user level
     renderer: Renderer,
-    scene: Vec<Box<dyn Renderable>> // tmp will have an actual Scene type later
+    scene: Vec<Box<dyn Renderable>>, // tmp will have an actual Scene type later
+    input: Rc<RefCell<InputState>>
 }
 
 impl<'a> Canvas<'a>
 {
     pub async fn attach(canvas_id: &str) -> Self
     {
-        let document = web_sys::window().unwrap().document().unwrap();
-        let canvas = document.get_element_by_id(canvas_id).unwrap();
+        let mut window = web_sys::window().unwrap();
+        let document = window.document().unwrap();
 
-        let canvas: HtmlCanvasElement = canvas.dyn_into::<HtmlCanvasElement>().expect("Element is not a canvas");
+        let element = document.get_element_by_id(canvas_id).unwrap();
 
+        let input = Rc::new(RefCell::new(InputState::new()));
+        InputState::attach_listeners(input.clone(), &mut window, element.as_ref());
+        info!("Successfully init input state and attached listeners");
+
+        let canvas: HtmlCanvasElement = element.dyn_into::<HtmlCanvasElement>().expect("Element is not a canvas");
         let canvas_width = canvas.width();
         let canvas_height = canvas.height();
 
@@ -102,6 +115,7 @@ impl<'a> Canvas<'a>
             queue,
             renderer,
             scene: vec![],
+            input,
         }
     }
 

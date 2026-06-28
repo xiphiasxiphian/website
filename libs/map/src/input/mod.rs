@@ -11,7 +11,7 @@ use web_sys::{EventTarget, KeyboardEvent, MouseEvent, Window};
 use crate::input::{key::Key, mouse::MouseButton};
 
 #[derive(Debug)]
-struct InputState
+pub struct InputState
 {
     keys_held: [bool; Key::COUNT],
     keys_down: [bool; Key::COUNT],
@@ -25,6 +25,20 @@ struct InputState
 
 impl InputState
 {
+    pub fn new() -> Self
+    {
+        Self {
+            keys_held: [false; Key::COUNT],
+            keys_down: [false; Key::COUNT],
+            keys_up: [false; Key::COUNT],
+            mouse_pos: (0, 0),
+            mouse_delta: (0, 0),
+            mouse_buttons: [false; MouseButton::COUNT],
+            mouse_down: [false; MouseButton::COUNT],
+            mouse_up: [false; MouseButton::COUNT],
+        }
+    }
+
     pub fn flush(&mut self)
     {
         self.mouse_delta = (0, 0);
