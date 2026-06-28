@@ -27,5 +27,7 @@ features = [
   "HtmlCanvasElement",
   "WebGlRenderingContext",
   "Window",
-  "console"
+  "console",
+  "MouseEvent",
+  "KeyboardEvent"
 ]
