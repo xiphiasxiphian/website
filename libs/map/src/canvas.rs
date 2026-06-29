@@ -46,8 +46,8 @@ impl<'a> Canvas<'a>
 {
     pub async fn attach(canvas_id: &str) -> Self
     {
-        let mut window = web_sys::window().unwrap();
-        let document = window.document().unwrap();
+        let mut window = web_sys::window().expect("Window not found");
+        let document = window.document().expect("Document not found");
 
         let element = document.get_element_by_id(canvas_id).unwrap();
 
