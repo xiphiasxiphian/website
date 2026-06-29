@@ -23,6 +23,7 @@ use crate::renderer::Renderable;
 use crate::renderer::Renderer;
 use crate::renderer::texture::Sprite;
 use crate::renderer::texture::Texture;
+use crate::util::assetpool::AssetPool;
 
 pub struct Canvas<'a>
 {
@@ -40,6 +41,7 @@ pub struct Canvas<'a>
     renderer: Renderer,
     scene: Vec<Box<dyn Renderable>>, // tmp will have an actual Scene type later
     input: Rc<RefCell<InputState>>,
+    asset_pool: AssetPool,
 }
 
 impl<'a> Canvas<'a>
@@ -122,6 +124,7 @@ impl<'a> Canvas<'a>
             renderer,
             scene: vec![],
             input,
+            asset_pool: AssetPool::default(),
         }
     }
 
