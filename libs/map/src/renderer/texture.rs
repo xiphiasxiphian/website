@@ -1,4 +1,7 @@
-use std::{hash::{DefaultHasher, Hash, Hasher}, path::Path};
+use std::{
+    hash::{DefaultHasher, Hash, Hasher},
+    path::Path,
+};
 
 use image::{DynamicImage, GenericImageView, ImageError};
 use wgpu::{
@@ -32,7 +35,6 @@ impl Texture
     {
         let rgba = image.to_rgba8();
         let dims = image.dimensions();
-
 
         let premultiplied: Vec<u8> = rgba
             .pixels()

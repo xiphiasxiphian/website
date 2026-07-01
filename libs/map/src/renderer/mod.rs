@@ -9,11 +9,11 @@ use wgpu::{
 
 use crate::renderer::{batch::BatchGroup, mesh::Mesh, texture::Texture, vertex::Vertex};
 
+pub mod batch;
+pub mod bufferpool;
 pub mod mesh;
 pub mod texture;
 pub mod vertex;
-pub mod batch;
-pub mod bufferpool;
 
 pub trait Renderable
 {
@@ -143,8 +143,6 @@ impl Renderer
 
             for renderable in BatchGroup::collect(renderables, dims)
             {
-
-
                 pass.set_bind_group(0, &texture.bind_group, &[]);
                 pass.set_vertex_buffer(0, vertex_buffer.slice(..));
                 pass.set_index_buffer(index_buffer.slice(..), wgpu::IndexFormat::Uint16);

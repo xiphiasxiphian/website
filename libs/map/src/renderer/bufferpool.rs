@@ -9,16 +9,12 @@ pub struct BufferPool
     vertex_capacity: usize,
     index_capacity: usize,
     current_vertex_count: usize,
-    current_index_count:  usize,
+    current_index_count: usize,
 }
 
 impl BufferPool
 {
-    pub fn new(
-        device: &Device,
-        max_vertices: usize,
-        max_indices: usize,
-    ) -> Self
+    pub fn new(device: &Device, max_vertices: usize, max_indices: usize) -> Self
     {
         let vertex_capacity = max_vertices * size_of::<Vertex>();
         let index_capacity = max_indices * size_of::<u32>();
@@ -47,18 +43,16 @@ impl BufferPool
         }
     }
 
-    pub fn write(
-        &mut self,
-        queue: &Queue,
-        vertices: &[Vertex],
-        indices: &[u32]
-    ) -> Option<BufferSlice>
+    pub fn write(&mut self, queue: &Queue, vertices: &[Vertex], indices: &[u32]) -> Option<BufferSlice>
     {
-        if vertices.len() > self.vertex_capacity || indices.len() > self.index_capacity {
+        if vertices.len() > self.vertex_capacity || indices.len() > self.index_capacity
+        {
             log::warn!(
                 "BufferPool overflow: {} vertices (cap {}), {} indices (cap {})",
-                vertices.len(), self.vertex_capacity,
-                indices.len(),  self.index_capacity,
+                vertices.len(),
+                self.vertex_capacity,
+                indices.len(),
+                self.index_capacity,
             );
             return None;
         }
@@ -67,10 +61,10 @@ impl BufferPool
         let ib = bytemuck::cast_slice(indices);
 
         queue.write_buffer(&self.vertex_buffer, 0, vb);
-        queue.write_buffer(&self.index_buffer,  0, ib);
+        queue.write_buffer(&self.index_buffer, 0, ib);
 
         self.current_vertex_count = vertices.len();
-        self.current_index_count  = indices.len();
+        self.current_index_count = indices.len();
 
         Some(BufferSlice(indices.len() as u32))
     }
@@ -78,7 +72,7 @@ impl BufferPool
     pub fn reset(&mut self)
     {
         self.current_vertex_count = 0;
-        self.current_index_count  = 0;
+        self.current_index_count = 0;
     }
 
     pub fn fits(&self, vertex_count: usize, index_count: usize) -> bool

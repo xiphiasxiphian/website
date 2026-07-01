@@ -29,10 +29,9 @@ impl TextureBatch
 
     pub fn push(&mut self, vertices: &[Vertex], indices: &[u32]) -> bool
     {
-        if !self.pool.fits(
-            self.vertices.len() + vertices.len(),
-            self.indices.len()  + indices.len(),
-        )
+        if !self
+            .pool
+            .fits(self.vertices.len() + vertices.len(), self.indices.len() + indices.len())
         {
             warn!("TextureBatch full, renderable dropped");
             return false;
@@ -45,10 +44,7 @@ impl TextureBatch
         true
     }
 
-    pub fn collect(
-        renderables: &[Box<dyn Renderable>],
-        dims: (f32, f32)
-    ) -> impl Iterator<Item = (&Texture, Self)>
+    pub fn collect(renderables: &[Box<dyn Renderable>], dims: (f32, f32)) -> impl Iterator<Item = (&Texture, Self)>
     {
         // TODO: have some better id here than the texture ptr.
         let mut groups: HashMap<*const Texture, (&Texture, Self)> = HashMap::new();
@@ -62,10 +58,15 @@ impl TextureBatch
 
             groups
                 .entry(texture as *const Texture)
-                .or_insert_with(|| (texture, BatchGroup {
-                    vertices: vec![],
-                    indices: vec![],
-                }))
+                .or_insert_with(|| {
+                    (
+                        texture,
+                        BatchGroup {
+                            vertices: vec![],
+                            indices: vec![],
+                        },
+                    )
+                })
                 .1
                 .push(&mesh.vertices, &indices);
         }
