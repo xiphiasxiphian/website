@@ -7,12 +7,13 @@ use wgpu::{
     util::{BufferInitDescriptor, DeviceExt},
 };
 
-use crate::renderer::{mesh::Mesh, texture::Texture, vertex::Vertex};
+use crate::renderer::{batch::BatchGroup, mesh::Mesh, texture::Texture, vertex::Vertex};
 
 pub mod mesh;
 pub mod texture;
 pub mod vertex;
 pub mod batch;
+pub mod bufferpool;
 
 pub trait Renderable
 {
@@ -140,21 +141,9 @@ impl Renderer
 
             pass.set_pipeline(&self.pipeline);
 
-            for renderable in renderables
+            for renderable in BatchGroup::collect(renderables, dims)
             {
-                let mesh = renderable.mesh(dims);
-                let texture = renderable.texture();
 
-                let vertex_buffer = device.create_buffer_init(&BufferInitDescriptor {
-                    label: Some("vertex_buffer"),
-                    contents: bytemuck::cast_slice(&mesh.vertices),
-                    usage: BufferUsages::VERTEX,
-                });
-                let index_buffer = device.create_buffer_init(&BufferInitDescriptor {
-                    label: Some("index_buffer"),
-                    contents: bytemuck::cast_slice(&mesh.indices),
-                    usage: BufferUsages::INDEX,
-                });
 
                 pass.set_bind_group(0, &texture.bind_group, &[]);
                 pass.set_vertex_buffer(0, vertex_buffer.slice(..));

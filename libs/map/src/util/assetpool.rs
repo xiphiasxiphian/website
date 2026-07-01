@@ -13,6 +13,14 @@ pub struct AssetPool
 
 impl AssetPool
 {
+    // maybe have some preloading here later
+    pub fn new() -> Self
+    {
+        Self {
+            textures: HashMap::new(),
+        }
+    }
+
     fn get_texture(
         &mut self,
         path: &Path,

@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::{hash::{DefaultHasher, Hash, Hasher}, path::Path};
 
 use image::{DynamicImage, GenericImageView, ImageError};
 use wgpu::{
@@ -32,6 +32,7 @@ impl Texture
     {
         let rgba = image.to_rgba8();
         let dims = image.dimensions();
+
 
         let premultiplied: Vec<u8> = rgba
             .pixels()
@@ -132,16 +133,16 @@ impl Texture
 }
 
 // This will probably get moved later
-pub struct Sprite
+pub struct Sprite<'assetpool>
 {
-    texture: Texture,
+    texture: &'assetpool Texture,
     pub loc: (f32, f32),
     dims: (f32, f32),
 }
 
-impl Sprite
+impl<'assetpool> Sprite<'assetpool>
 {
-    pub fn new(texture: Texture, location: (f32, f32), dimensions: (f32, f32)) -> Self
+    pub fn new(texture: &'assetpool Texture, location: (f32, f32), dimensions: (f32, f32)) -> Self
     {
         Self {
             texture,
@@ -151,7 +152,7 @@ impl Sprite
     }
 }
 
-impl Renderable for Sprite
+impl Renderable for Sprite<'_>
 {
     fn mesh(&self, dims: (f32, f32)) -> Mesh
     {
