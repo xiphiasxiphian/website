@@ -12,6 +12,7 @@ use crate::renderer::{mesh::Mesh, texture::Texture, vertex::Vertex};
 pub mod mesh;
 pub mod texture;
 pub mod vertex;
+pub mod batch;
 
 pub trait Renderable
 {
