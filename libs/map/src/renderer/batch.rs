@@ -4,7 +4,7 @@ use itertools::Itertools;
 use log::warn;
 use wgpu::{Buffer, BufferDescriptor, BufferUsages, Device, Queue};
 
-use crate::renderer::{Renderable, bufferpool::BufferPool, texture::Texture, vertex::Vertex};
+use crate::renderer::{Renderable, bufferpool::{BufferPool, BufferSlice}, texture::Texture, vertex::Vertex};
 
 pub struct TextureBatch
 {
@@ -42,6 +42,19 @@ impl TextureBatch
         self.indices.extend(indices.iter().map(|i| i + offset));
 
         true
+    }
+
+    pub fn flush(&mut self, queue: &Queue) -> Option<BufferSlice>
+    {
+        if self.vertices.is_empty() { return None; }
+
+        let slice = self.pool.write(queue, &self.vertices, &self.indices);
+
+        self.vertices.clear();
+        self.indices.clear();
+        self.pool.reset();
+
+        slice
     }
 
     pub fn collect(renderables: &[Box<dyn Renderable>], dims: (f32, f32)) -> impl Iterator<Item = (&Texture, Self)>
