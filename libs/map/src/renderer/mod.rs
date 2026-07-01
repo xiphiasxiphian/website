@@ -1,12 +1,7 @@
 use std::collections::HashMap;
 
 use wgpu::{
-    BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingType, BlendComponent, BlendFactor,
-    BlendOperation, BlendState, BufferUsages, ColorWrites, CommandEncoderDescriptor, Device, FragmentState,
-    MultisampleState, Operations, PipelineLayoutDescriptor, PrimitiveState, Queue, RenderPassColorAttachment,
-    RenderPassDescriptor, RenderPipeline, RenderPipelineDescriptor, ShaderStages, TextureFormat, TextureView,
-    VertexState, include_wgsl,
-    util::{BufferInitDescriptor, DeviceExt},
+    BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingType, BlendComponent, BlendFactor, BlendOperation, BlendState, BufferUsages, ColorWrites, CommandEncoderDescriptor, Device, FragmentState, IndexFormat, MultisampleState, Operations, PipelineLayoutDescriptor, PrimitiveState, Queue, RenderPassColorAttachment, RenderPassDescriptor, RenderPipeline, RenderPipelineDescriptor, ShaderStages, TextureFormat, TextureView, VertexState, include_wgsl, util::{BufferInitDescriptor, DeviceExt},
 };
 
 use crate::renderer::{batch::TextureBatch, mesh::Mesh, texture::Texture, vertex::Vertex};
@@ -118,7 +113,7 @@ impl Renderer
     }
 
     pub fn draw(
-        &self,
+        &mut self,
         renderables: &[Box<dyn Renderable>],
         device: &Device,
         queue: &Queue,
@@ -126,6 +121,23 @@ impl Renderer
         dims: (f32, f32),
     )
     {
+        for renderable in renderables
+        {
+            let mesh = renderable.mesh(dims);
+            let texture = renderable.texture();
+
+            // TODO: again this keying only works because assetpool. improve in future
+            let key = texture as *const Texture;
+
+            let indices: Vec<u32> = mesh.indices.iter().map(|&i| i as u32).collect();
+
+            let batch = self.batches
+                .entry(key)
+                .or_insert_with(|| TextureBatch::new(device));
+
+            batch.push(&mesh.vertices, &indices);
+        }
+
         let mut encoder = device.create_command_encoder(&CommandEncoderDescriptor {
             label: Some("render_encoder"),
         });
@@ -148,15 +160,25 @@ impl Renderer
 
             pass.set_pipeline(&self.pipeline);
 
-            for renderable in BatchGroup::collect(renderables, dims)
+            for (key, batch) in &mut self.batches
             {
+                let Some(slice) = batch.flush(queue) else { continue };
+
+                // BODGE FIX: probably better to embed texture data in later
+                let texture = unsafe {  &**key };
+
                 pass.set_bind_group(0, &texture.bind_group, &[]);
-                pass.set_vertex_buffer(0, vertex_buffer.slice(..));
-                pass.set_index_buffer(index_buffer.slice(..), wgpu::IndexFormat::Uint16);
-                pass.draw_indexed(0..mesh.indices.len() as u32, 0, 0..1);
+                pass.set_vertex_buffer(0, batch.pool.vertex_buffer());
+                pass.set_index_buffer(batch.pool.index_buffer(), IndexFormat::Uint32);
+                pass.draw_indexed(0..slice.0, 0, 0..1);
             }
         }
 
         queue.submit(std::iter::once(encoder.finish()));
+    }
+
+    pub fn remove_batch(&mut self, texture: &Texture)
+    {
+        self.batches.remove(&(texture as *const Texture));
     }
 }
