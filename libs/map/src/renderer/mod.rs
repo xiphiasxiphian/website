@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use wgpu::{
     BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingType, BlendComponent, BlendFactor,
     BlendOperation, BlendState, BufferUsages, ColorWrites, CommandEncoderDescriptor, Device, FragmentState,
@@ -7,7 +9,7 @@ use wgpu::{
     util::{BufferInitDescriptor, DeviceExt},
 };
 
-use crate::renderer::{batch::BatchGroup, mesh::Mesh, texture::Texture, vertex::Vertex};
+use crate::renderer::{batch::TextureBatch, mesh::Mesh, texture::Texture, vertex::Vertex};
 
 pub mod batch;
 pub mod bufferpool;
@@ -25,6 +27,10 @@ pub struct Renderer
 {
     pub texture_bind_group_layout: BindGroupLayout,
     pipeline: RenderPipeline,
+
+    // TODO: right now this works because the assetpool ensures the pointers are constant,
+    // however it feels slightly dodgy
+    batches: HashMap<*const Texture, TextureBatch>,
 }
 
 impl Renderer
@@ -107,6 +113,7 @@ impl Renderer
         Self {
             texture_bind_group_layout,
             pipeline,
+            batches: HashMap::new(),
         }
     }
 
