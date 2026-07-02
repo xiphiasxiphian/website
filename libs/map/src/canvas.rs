@@ -23,7 +23,6 @@ use crate::input::InputState;
 use crate::renderer::Renderable;
 use crate::renderer::Renderer;
 use crate::renderer::texture::Sprite;
-use crate::renderer::texture::Texture;
 use crate::util::assetpool::AssetPool;
 
 pub struct Canvas<'a>
