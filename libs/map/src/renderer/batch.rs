@@ -1,10 +1,8 @@
-use std::collections::HashMap;
 
-use itertools::Itertools;
 use log::warn;
-use wgpu::{Buffer, BufferDescriptor, BufferUsages, Device, Queue};
+use wgpu::{Device, Queue};
 
-use crate::renderer::{Renderable, bufferpool::{BufferPool, BufferSlice}, texture::Texture, vertex::Vertex};
+use crate::renderer::{bufferpool::{BufferPool, BufferSlice}, vertex::Vertex};
 
 pub struct TextureBatch
 {

@@ -1,7 +1,4 @@
-use std::{
-    hash::{DefaultHasher, Hash, Hasher},
-    path::Path,
-};
+use std::path::Path;
 
 use image::{DynamicImage, GenericImageView, ImageError};
 use wgpu::{

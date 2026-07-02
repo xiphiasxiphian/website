@@ -80,12 +80,12 @@ impl BufferPool
         vertex_count <= self.vertex_capacity && index_count <= self.index_capacity
     }
 
-    pub fn vertex_buffer(&self) -> wgpu::BufferSlice
+    pub fn vertex_buffer(&self) -> wgpu::BufferSlice<'_>
     {
         self.vertex_buffer.slice(..)
     }
 
-    pub fn index_buffer(&self) -> wgpu::BufferSlice
+    pub fn index_buffer(&self) -> wgpu::BufferSlice<'_>
     {
         self.index_buffer.slice(..)
     }
