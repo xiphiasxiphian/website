@@ -1,2 +1,2 @@
-pub mod assetpool;
+pub mod assets;
 pub mod color;
