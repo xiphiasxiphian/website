@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, sync::Arc};
 
 use wgpu::{
     BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingType, BlendComponent, BlendFactor,
@@ -8,7 +8,7 @@ use wgpu::{
     VertexState, include_wgsl,
 };
 
-use crate::renderer::{batch::TextureBatch, mesh::Mesh, texture::Texture, vertex::Vertex};
+use crate::{renderer::{batch::TextureBatch, mesh::Mesh, texture::Texture, vertex::Vertex}, util::assetpool::TextureAsset};
 
 pub mod batch;
 pub mod bufferpool;
@@ -19,7 +19,7 @@ pub mod vertex;
 pub trait Renderable
 {
     fn mesh(&self, canvas_dims: (f32, f32)) -> Mesh;
-    fn texture(&self) -> &Texture;
+    fn texture(&self) -> &TextureAsset;
 }
 
 pub struct Renderer
@@ -29,7 +29,7 @@ pub struct Renderer
 
     // TODO: right now this works because the assetpool ensures the pointers are constant,
     // however it feels slightly dodgy
-    batches: HashMap<*const Texture, TextureBatch>,
+    batches: HashMap<*const Texture, (TextureAsset, TextureBatch)>,
 }
 
 impl Renderer
@@ -131,13 +131,13 @@ impl Renderer
             let texture = renderable.texture();
 
             // TODO: again this keying only works because assetpool. improve in future
-            let key = texture as *const Texture;
+            let key = Arc::as_ptr(texture);
 
             let indices: Vec<u32> = mesh.indices.iter().map(|&i| i as u32).collect();
 
-            let batch = self.batches.entry(key).or_insert_with(|| TextureBatch::new(device));
+            let batch = self.batches.entry(key).or_insert_with(|| (Arc::clone(texture), TextureBatch::new(device)));
 
-            batch.push(&mesh.vertices, &indices);
+            batch.1.push(&mesh.vertices, &indices);
         }
 
         let mut encoder = device.create_command_encoder(&CommandEncoderDescriptor {
@@ -162,16 +162,13 @@ impl Renderer
 
             pass.set_pipeline(&self.pipeline);
 
-            for (key, batch) in &mut self.batches
+            for (_, (texture, batch)) in &mut self.batches
             {
                 let Some(slice) = batch.flush(queue)
                 else
                 {
                     continue;
                 };
-
-                // BODGE FIX: probably better to embed texture data in later
-                let texture = unsafe { &**key };
 
                 pass.set_bind_group(0, &texture.bind_group, &[]);
                 pass.set_vertex_buffer(0, batch.pool.vertex_buffer());
