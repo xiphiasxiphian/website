@@ -10,7 +10,7 @@ use wgpu::{
     TextureUsages, TextureView, TextureViewDescriptor,
 };
 
-use crate::renderer::{Renderable, mesh::Mesh};
+use crate::{renderer::{Renderable, mesh::Mesh}, util::assetpool::TextureAsset};
 
 pub struct Texture
 {
@@ -135,16 +135,16 @@ impl Texture
 }
 
 // This will probably get moved later
-pub struct Sprite<'assetpool>
+pub struct Sprite
 {
-    texture: &'assetpool Texture,
+    texture: TextureAsset,
     pub loc: (f32, f32),
     dims: (f32, f32),
 }
 
-impl<'assetpool> Sprite<'assetpool>
+impl Sprite
 {
-    pub fn new(texture: &'assetpool Texture, location: (f32, f32), dimensions: (f32, f32)) -> Self
+    pub fn new(texture: TextureAsset, location: (f32, f32), dimensions: (f32, f32)) -> Self
     {
         Self {
             texture,
@@ -154,7 +154,7 @@ impl<'assetpool> Sprite<'assetpool>
     }
 }
 
-impl Renderable for Sprite<'_>
+impl Renderable for Sprite
 {
     fn mesh(&self, dims: (f32, f32)) -> Mesh
     {

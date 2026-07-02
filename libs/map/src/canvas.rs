@@ -1,4 +1,5 @@
 use std::cell::RefCell;
+use std::path::Path;
 use std::rc::Rc;
 
 use log::info;
@@ -130,8 +131,8 @@ impl<'a> Canvas<'a>
 
     pub async fn run(&mut self)
     {
-        let texture = Texture::from_bytes(
-            include_bytes!("../assets/images/grass.png"),
+        let texture = self.asset_pool.get_texture(
+            Path::new("../assets/images/grass.png"),
             &self.device,
             &self.queue,
             &self.renderer.texture_bind_group_layout,
