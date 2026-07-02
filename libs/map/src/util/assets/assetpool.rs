@@ -19,7 +19,7 @@ pub struct AssetPool
 impl AssetPool
 {
     pub fn preloaded(
-        assets: &[(&'static str, &[u8])],
+        textures: &[(&'static str, &[u8])],
         device: &Device,
         queue:  &Queue,
         layout: &BindGroupLayout,
@@ -27,12 +27,13 @@ impl AssetPool
     {
         let mut pool = Self::default();
 
-        for (name, bytes) in assets
+        for (name, bytes) in textures
         {
             let texture = Texture::from_bytes(bytes, device, queue, layout)?;
             pool.textures.insert(name, Arc::new(texture));
             log::info!("Loaded texture: {}", name);
         }
+
         Ok(pool)
     }
 
