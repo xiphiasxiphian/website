@@ -8,7 +8,10 @@ use wgpu::{
     VertexState, include_wgsl,
 };
 
-use crate::{renderer::{batch::TextureBatch, mesh::Mesh, texture::Texture, vertex::Vertex}, util::assets::assetpool::TextureAsset};
+use crate::{
+    renderer::{batch::TextureBatch, mesh::Mesh, texture::Texture, vertex::Vertex},
+    util::assets::assetpool::TextureAsset,
+};
 
 pub mod batch;
 pub mod bufferpool;
@@ -135,7 +138,10 @@ impl Renderer
 
             let indices: Vec<u32> = mesh.indices.iter().map(|&i| i as u32).collect();
 
-            let batch = self.batches.entry(key).or_insert_with(|| (Arc::clone(texture), TextureBatch::new(device)));
+            let batch = self
+                .batches
+                .entry(key)
+                .or_insert_with(|| (Arc::clone(texture), TextureBatch::new(device)));
 
             batch.1.push(&mesh.vertices, &indices);
         }

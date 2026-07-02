@@ -1,7 +1,4 @@
-use std::{
-    collections::HashMap,
-    sync::Arc,
-};
+use std::{collections::HashMap, sync::Arc};
 
 use image::ImageError;
 use wgpu::{BindGroupLayout, Device, Queue};
@@ -22,7 +19,7 @@ impl AssetPool
     pub fn preloaded(
         textures: &[(&'static str, &[u8])],
         device: &Device,
-        queue:  &Queue,
+        queue: &Queue,
         layout: &BindGroupLayout,
     ) -> Result<Self, AssetPoolError>
     {
@@ -38,10 +35,7 @@ impl AssetPool
         Ok(pool)
     }
 
-    pub fn get_texture(
-        &mut self,
-        id: &'static str,
-    ) -> Result<TextureAsset, AssetPoolError>
+    pub fn get_texture(&mut self, id: &'static str) -> Result<TextureAsset, AssetPoolError>
     {
         self.textures
             .get(id)

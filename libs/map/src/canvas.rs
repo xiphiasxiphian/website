@@ -113,13 +113,8 @@ impl<'a> Canvas<'a>
         let renderer = Renderer::new(&device, surface_format);
         info!("Succesfully init renderer");
 
-        let asset_pool = AssetPool::preloaded(
-            assets::TEXTURES,
-            &device,
-            &queue,
-            &renderer.texture_bind_group_layout
-        )
-        .expect("Failed to init asset pool");
+        let asset_pool = AssetPool::preloaded(assets::TEXTURES, &device, &queue, &renderer.texture_bind_group_layout)
+            .expect("Failed to init asset pool");
         info!("Successfully init assetpool");
 
         Self {
@@ -139,10 +134,7 @@ impl<'a> Canvas<'a>
 
     pub async fn run(&mut self)
     {
-        let texture = self
-            .asset_pool
-            .get_texture("grass")
-            .unwrap();
+        let texture = self.asset_pool.get_texture("grass").unwrap();
 
         let sprite = Box::new(Sprite::new(texture, (100.0, 100.0), (200.0, 200.0)));
         self.scene.push(sprite);

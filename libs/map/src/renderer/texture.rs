@@ -1,4 +1,3 @@
-
 use image::{DynamicImage, GenericImageView, ImageError};
 use wgpu::{
     BindGroup, BindGroupDescriptor, BindGroupEntry, BindGroupLayout, BindingResource, Device, Extent3d,
@@ -7,7 +6,8 @@ use wgpu::{
 };
 
 use crate::{
-    renderer::{Renderable, mesh::Mesh}, util::assets::assetpool::TextureAsset,
+    renderer::{Renderable, mesh::Mesh},
+    util::assets::assetpool::TextureAsset,
 };
 
 pub struct Texture
