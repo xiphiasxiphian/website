@@ -8,7 +8,7 @@ use wgpu::{
     VertexState, include_wgsl,
 };
 
-use crate::{renderer::{batch::TextureBatch, mesh::Mesh, texture::Texture, vertex::Vertex}, util::assetpool::TextureAsset};
+use crate::{renderer::{batch::TextureBatch, mesh::Mesh, texture::Texture, vertex::Vertex}, util::assets::assetpool::TextureAsset};
 
 pub mod batch;
 pub mod bufferpool;

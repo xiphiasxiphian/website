@@ -8,8 +8,7 @@ use wgpu::{
 };
 
 use crate::{
-    renderer::{Renderable, mesh::Mesh},
-    util::assetpool::TextureAsset,
+    renderer::{Renderable, mesh::Mesh}, util::assets::assetpool::TextureAsset,
 };
 
 pub struct Texture
@@ -111,7 +110,7 @@ impl Texture
             texture: diffuse_texture,
             view,
             sampler,
-            bind_group,s
+            bind_group,
         })
     }
 
