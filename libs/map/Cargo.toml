@@ -20,6 +20,7 @@ image = "0.25.10"
 bytemuck = { version = "1.25.0", features = ["derive"] }
 strum = { version = "0.28.0", features = ["derive"] }
 derive-new = "0.7.0"
+thiserror = "2.0.18"
 
 [dependencies.web-sys]
 version = "0.3"

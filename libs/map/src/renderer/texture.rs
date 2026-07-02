@@ -111,16 +111,16 @@ impl Texture
             texture: diffuse_texture,
             view,
             sampler,
-            bind_group,
+            bind_group,s
         })
     }
 
-    pub fn from_path(path: &Path, device: &Device, queue: &Queue, layout: &BindGroupLayout)
-    -> Result<Self, ImageError>
-    {
-        let image = image::open(path)?;
-        Self::from_image(&image, device, queue, layout)
-    }
+    // pub fn from_path(path: &Path, device: &Device, queue: &Queue, layout: &BindGroupLayout)
+    // -> Result<Self, ImageError>
+    // {
+    //     let image = image::open(path)?;
+    //     Self::from_image(&image, device, queue, layout)
+    // }
 
     pub fn from_bytes(
         bytes: &[u8],
@@ -161,7 +161,7 @@ impl Renderable for Sprite
         Mesh::quad(self.loc.0, self.loc.1, self.dims.0, self.dims.1, dims)
     }
 
-    fn texture(&self) -> &Texture
+    fn texture(&self) -> &TextureAsset
     {
         &self.texture
     }
