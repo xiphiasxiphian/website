@@ -1,5 +1,3 @@
-// src/input/key.rs
-
 use strum::EnumCount;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, EnumCount)]

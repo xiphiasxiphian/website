@@ -8,7 +8,8 @@ use wgpu::{BindGroupLayout, Device, Queue};
 
 use crate::renderer::texture::Texture;
 
-pub type TextureAsset = Arc<Texture>;
+pub type Asset<T> = Arc<T>;
+pub type TextureAsset = Asset<Texture>;
 
 #[derive(Default)]
 pub struct AssetPool

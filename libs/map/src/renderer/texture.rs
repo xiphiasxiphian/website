@@ -114,12 +114,13 @@ impl Texture
         })
     }
 
-    // pub fn from_path(path: &Path, device: &Device, queue: &Queue, layout: &BindGroupLayout)
-    // -> Result<Self, ImageError>
-    // {
-    //     let image = image::open(path)?;
-    //     Self::from_image(&image, device, queue, layout)
-    // }
+    #[cfg(not(target_arch = "wasm32"))]
+    pub fn from_path(path: &Path, device: &Device, queue: &Queue, layout: &BindGroupLayout)
+    -> Result<Self, ImageError>
+    {
+        let image = image::open(path)?;
+        Self::from_image(&image, device, queue, layout)
+    }
 
     pub fn from_bytes(
         bytes: &[u8],
