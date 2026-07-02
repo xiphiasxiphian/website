@@ -3,6 +3,7 @@ mod clock;
 mod input;
 mod renderer;
 mod util;
+mod jade;
 
 use log::info;
 use wasm_bindgen::prelude::*;
