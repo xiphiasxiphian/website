@@ -23,7 +23,8 @@ use crate::input::InputState;
 use crate::renderer::Renderable;
 use crate::renderer::Renderer;
 use crate::renderer::texture::Sprite;
-use crate::util::assetpool::AssetPool;
+use crate::util::assets;
+use crate::util::assets::assetpool::AssetPool;
 
 pub struct Canvas<'a>
 {
@@ -113,6 +114,15 @@ impl<'a> Canvas<'a>
         let renderer = Renderer::new(&device, surface_format);
         info!("Succesfully init renderer");
 
+        let asset_pool = AssetPool::preloaded(
+            assets::TEXTURES,
+            &device,
+            &queue,
+            &renderer.texture_bind_group_layout
+        )
+        .expect("Failed to init asset pool");
+        info!("Successfully init assetpool");
+
         Self {
             window,
             dims: (canvas_width, canvas_height),
@@ -124,7 +134,7 @@ impl<'a> Canvas<'a>
             renderer,
             scene: vec![],
             input,
-            asset_pool: AssetPool::default(),
+            asset_pool,
         }
     }
 
@@ -132,12 +142,7 @@ impl<'a> Canvas<'a>
     {
         let texture = self
             .asset_pool
-            .get_texture(
-                Path::new("../assets/images/grass.png"),
-                &self.device,
-                &self.queue,
-                &self.renderer.texture_bind_group_layout,
-            )
+            .get_texture("grass")
             .unwrap();
 
         let sprite = Box::new(Sprite::new(texture, (100.0, 100.0), (200.0, 200.0)));
