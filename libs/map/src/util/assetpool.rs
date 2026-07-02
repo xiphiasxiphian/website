@@ -1,5 +1,7 @@
 use std::{
-    collections::HashMap, path::{Path, PathBuf}, sync::Arc,
+    collections::HashMap,
+    path::{Path, PathBuf},
+    sync::Arc,
 };
 
 use image::ImageError;
@@ -48,19 +50,21 @@ impl AssetPool
 pub enum AssetPoolError
 {
     IOError(std::io::Error),
-    ImageError(ImageError)
+    ImageError(ImageError),
 }
 
 impl From<ImageError> for AssetPoolError
 {
-    fn from(value: ImageError) -> Self {
+    fn from(value: ImageError) -> Self
+    {
         Self::ImageError(value)
     }
 }
 
 impl From<std::io::Error> for AssetPoolError
 {
-    fn from(value: std::io::Error) -> Self {
+    fn from(value: std::io::Error) -> Self
+    {
         Self::IOError(value)
     }
 }

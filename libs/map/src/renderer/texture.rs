@@ -7,7 +7,10 @@ use wgpu::{
     TextureUsages, TextureView, TextureViewDescriptor,
 };
 
-use crate::{renderer::{Renderable, mesh::Mesh}, util::assetpool::TextureAsset};
+use crate::{
+    renderer::{Renderable, mesh::Mesh},
+    util::assetpool::TextureAsset,
+};
 
 pub struct Texture
 {

@@ -1,7 +1,11 @@
 use std::collections::HashMap;
 
 use wgpu::{
-    BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingType, BlendComponent, BlendFactor, BlendOperation, BlendState, ColorWrites, CommandEncoderDescriptor, Device, FragmentState, IndexFormat, MultisampleState, Operations, PipelineLayoutDescriptor, PrimitiveState, Queue, RenderPassColorAttachment, RenderPassDescriptor, RenderPipeline, RenderPipelineDescriptor, ShaderStages, TextureFormat, TextureView, VertexState, include_wgsl,
+    BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingType, BlendComponent, BlendFactor,
+    BlendOperation, BlendState, ColorWrites, CommandEncoderDescriptor, Device, FragmentState, IndexFormat,
+    MultisampleState, Operations, PipelineLayoutDescriptor, PrimitiveState, Queue, RenderPassColorAttachment,
+    RenderPassDescriptor, RenderPipeline, RenderPipelineDescriptor, ShaderStages, TextureFormat, TextureView,
+    VertexState, include_wgsl,
 };
 
 use crate::renderer::{batch::TextureBatch, mesh::Mesh, texture::Texture, vertex::Vertex};
@@ -131,9 +135,7 @@ impl Renderer
 
             let indices: Vec<u32> = mesh.indices.iter().map(|&i| i as u32).collect();
 
-            let batch = self.batches
-                .entry(key)
-                .or_insert_with(|| TextureBatch::new(device));
+            let batch = self.batches.entry(key).or_insert_with(|| TextureBatch::new(device));
 
             batch.push(&mesh.vertices, &indices);
         }
@@ -162,10 +164,14 @@ impl Renderer
 
             for (key, batch) in &mut self.batches
             {
-                let Some(slice) = batch.flush(queue) else { continue };
+                let Some(slice) = batch.flush(queue)
+                else
+                {
+                    continue;
+                };
 
                 // BODGE FIX: probably better to embed texture data in later
-                let texture = unsafe {  &**key };
+                let texture = unsafe { &**key };
 
                 pass.set_bind_group(0, &texture.bind_group, &[]);
                 pass.set_vertex_buffer(0, batch.pool.vertex_buffer());

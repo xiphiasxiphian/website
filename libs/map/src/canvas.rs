@@ -130,13 +130,15 @@ impl<'a> Canvas<'a>
 
     pub async fn run(&mut self)
     {
-        let texture = self.asset_pool.get_texture(
-            Path::new("../assets/images/grass.png"),
-            &self.device,
-            &self.queue,
-            &self.renderer.texture_bind_group_layout,
-        )
-        .unwrap();
+        let texture = self
+            .asset_pool
+            .get_texture(
+                Path::new("../assets/images/grass.png"),
+                &self.device,
+                &self.queue,
+                &self.renderer.texture_bind_group_layout,
+            )
+            .unwrap();
 
         let sprite = Box::new(Sprite::new(texture, (100.0, 100.0), (200.0, 200.0)));
         self.scene.push(sprite);

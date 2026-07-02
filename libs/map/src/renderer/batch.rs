@@ -1,8 +1,10 @@
-
 use log::warn;
 use wgpu::{Device, Queue};
 
-use crate::renderer::{bufferpool::{BufferPool, BufferSlice}, vertex::Vertex};
+use crate::renderer::{
+    bufferpool::{BufferPool, BufferSlice},
+    vertex::Vertex,
+};
 
 pub struct TextureBatch
 {
@@ -44,7 +46,10 @@ impl TextureBatch
 
     pub fn flush(&mut self, queue: &Queue) -> Option<BufferSlice>
     {
-        if self.vertices.is_empty() { return None; }
+        if self.vertices.is_empty()
+        {
+            return None;
+        }
 
         let slice = self.pool.write(queue, &self.vertices, &self.indices);
 
