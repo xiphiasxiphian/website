@@ -23,9 +23,7 @@ use crate::jade::ecs::component::ComponentContext;
 use crate::jade::ecs::object::Object;
 use crate::jade::ecs::scene::Scene;
 use crate::jade::ecs::transform::Transform;
-use crate::renderer::Renderable;
 use crate::renderer::Renderer;
-use crate::renderer::texture::Sprite;
 use crate::util::assets;
 use crate::util::assets::assetpool::AssetPool;
 
