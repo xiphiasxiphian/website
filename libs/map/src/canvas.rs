@@ -149,6 +149,14 @@ impl<'a> Canvas<'a>
 
         let mut clock = Clock::new(&self.window).expect("Failed to init clock");
 
+        // scene init
+        {
+            let input = self.input.borrow();
+            self.scene.start(&mut ComponentContext {
+                input: &input,
+            });
+        }
+
         // main render loop
         loop
         {
