@@ -139,9 +139,14 @@ impl<'a> Canvas<'a>
         let texture = self.asset_pool.get_texture("grass").unwrap();
 
         // let sprite = Box::new(Sprite::new(texture, (100.0, 100.0), (200.0, 200.0)));
-        let sprite =
-            Object::new("grass", Transform { pos: (100.0, 100.0), size: (200.0, 200.0) })
-                .with_texture(texture);
+        let sprite = Object::new(
+            "grass",
+            Transform {
+                pos: (100.0, 100.0),
+                size: (200.0, 200.0),
+            },
+        )
+        .with_texture(texture);
 
         self.scene.add(sprite);
 
@@ -150,9 +155,7 @@ impl<'a> Canvas<'a>
         // scene init
         {
             let input = self.input.borrow();
-            self.scene.start(&mut ComponentContext {
-                input: &input,
-            });
+            self.scene.start(&mut ComponentContext { input: &input });
         }
 
         // main render loop
@@ -173,9 +176,7 @@ impl<'a> Canvas<'a>
 
             {
                 let input = self.input.borrow();
-                self.scene.tick(&mut ComponentContext {
-                    input: &input,
-                }, dt);
+                self.scene.tick(&mut ComponentContext { input: &input }, dt);
             }
 
             let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());

@@ -3,7 +3,7 @@ use crate::jade::ecs::{component::ComponentContext, object::Object};
 #[derive(Default)]
 pub struct Scene
 {
-    objects: Vec<Object>
+    objects: Vec<Object>,
 }
 
 impl Scene

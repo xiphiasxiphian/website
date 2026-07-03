@@ -1,6 +1,13 @@
 use std::mem;
 
-use crate::{jade::ecs::{component::{Component, ComponentContext}, transform::Transform}, renderer::{Renderable, ZIndex, mesh::Mesh}, util::assets::assetpool::TextureAsset};
+use crate::{
+    jade::ecs::{
+        component::{Component, ComponentContext},
+        transform::Transform,
+    },
+    renderer::{Renderable, ZIndex, mesh::Mesh},
+    util::assets::assetpool::TextureAsset,
+};
 
 #[derive(Default)]
 pub struct Object
@@ -10,15 +17,12 @@ pub struct Object
     z_index: ZIndex,
     components: Vec<Box<dyn Component>>,
     started: bool,
-    texture: Option<TextureAsset>
+    texture: Option<TextureAsset>,
 }
 
 impl Object
 {
-    pub fn new(
-        name: &str,
-        transform: Transform,
-    ) -> Self
+    pub fn new(name: &str, transform: Transform) -> Self
     {
         Self {
             name: name.to_string(),
@@ -52,7 +56,9 @@ impl Object
 
     pub fn get_component_mut<C: Component>(&mut self) -> Option<&mut C>
     {
-        self.components.iter_mut().find_map(|x| x.as_any_mut().downcast_mut::<C>())
+        self.components
+            .iter_mut()
+            .find_map(|x| x.as_any_mut().downcast_mut::<C>())
     }
 
     pub fn has_component<C: Component>(&self) -> bool
@@ -60,10 +66,12 @@ impl Object
         self.get_component::<C>().is_some()
     }
 
-
     pub fn start(&mut self, ctx: &mut ComponentContext)
     {
-        if self.started { return; }
+        if self.started
+        {
+            return;
+        }
 
         let mut components = mem::take(&mut self.components);
         for component in &mut components
@@ -96,7 +104,13 @@ impl Renderable for Object
 
     fn mesh(&self, canvas_dims: (f32, f32)) -> Mesh
     {
-        Mesh::quad(self.transform.pos.0, self.transform.pos.1, self.transform.size.0, self.transform.size.1, canvas_dims)
+        Mesh::quad(
+            self.transform.pos.0,
+            self.transform.pos.1,
+            self.transform.size.0,
+            self.transform.size.1,
+            canvas_dims,
+        )
     }
 
     fn z_index(&self) -> ZIndex

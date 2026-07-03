@@ -1,9 +1,9 @@
 mod canvas;
 mod clock;
 mod input;
+mod jade;
 mod renderer;
 mod util;
-mod jade;
 
 use log::info;
 use wasm_bindgen::prelude::*;

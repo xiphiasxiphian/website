@@ -9,7 +9,9 @@ use wgpu::{
 };
 
 use crate::{
-    jade::ecs::object::Object, renderer::{batch::TextureBatch, mesh::Mesh, texture::Texture, vertex::Vertex}, util::assets::assetpool::TextureAsset,
+    jade::ecs::object::Object,
+    renderer::{batch::TextureBatch, mesh::Mesh, texture::Texture, vertex::Vertex},
+    util::assets::assetpool::TextureAsset,
 };
 
 pub mod batch;
@@ -121,19 +123,16 @@ impl Renderer
         }
     }
 
-    pub fn draw(
-        &mut self,
-        renderables: &[Object],
-        device: &Device,
-        queue: &Queue,
-        view: &TextureView,
-        dims: (f32, f32),
-    )
+    pub fn draw(&mut self, renderables: &[Object], device: &Device, queue: &Queue, view: &TextureView, dims: (f32, f32))
     {
         for renderable in renderables
         {
             let mesh = renderable.mesh(dims);
-            let Some(texture) = renderable.texture() else { continue };
+            let Some(texture) = renderable.texture()
+            else
+            {
+                continue;
+            };
 
             // TODO: again this keying only works because assetpool. improve in future
             let key = Arc::as_ptr(texture);

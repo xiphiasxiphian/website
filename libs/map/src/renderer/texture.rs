@@ -141,7 +141,6 @@ pub struct Sprite
     dims: (f32, f32),
 }
 
-
 // tmp sprite for render testing
 impl Sprite
 {
@@ -167,7 +166,8 @@ impl Renderable for Sprite
         Some(&self.texture)
     }
 
-    fn z_index(&self) -> super::ZIndex {
+    fn z_index(&self) -> super::ZIndex
+    {
         0
     }
 }
