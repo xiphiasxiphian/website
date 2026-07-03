@@ -4,9 +4,9 @@ use crate::input::InputState;
 
 pub trait Component: Any
 {
-    fn start(&mut self, _ctx: ComponentContext) {}
+    fn start(&mut self, _ctx: &mut ComponentContext) {}
 
-    fn tick(&mut self, _ctx: ComponentContext, _dt: f32) {}
+    fn tick(&mut self, _ctx: &mut ComponentContext, _dt: f32) {}
 
     // downcasting
     fn as_any(&self) -> &dyn Any;
