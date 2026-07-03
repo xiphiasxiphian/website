@@ -19,6 +19,10 @@ use wgpu::{
 
 use crate::clock::Clock;
 use crate::input::InputState;
+use crate::jade::ecs::component::ComponentContext;
+use crate::jade::ecs::object::Object;
+use crate::jade::ecs::scene::Scene;
+use crate::jade::ecs::transform::Transform;
 use crate::renderer::Renderable;
 use crate::renderer::Renderer;
 use crate::renderer::texture::Sprite;
@@ -39,7 +43,7 @@ pub struct Canvas<'a>
 
     // user level
     renderer: Renderer,
-    scene: Vec<Box<dyn Renderable>>, // tmp will have an actual Scene type later
+    scene: Scene,
     input: Rc<RefCell<InputState>>,
     asset_pool: AssetPool,
 }
@@ -126,7 +130,7 @@ impl<'a> Canvas<'a>
             device,
             queue,
             renderer,
-            scene: vec![],
+            scene: Scene::default(),
             input,
             asset_pool,
         }
@@ -136,8 +140,12 @@ impl<'a> Canvas<'a>
     {
         let texture = self.asset_pool.get_texture("grass").unwrap();
 
-        let sprite = Box::new(Sprite::new(texture, (100.0, 100.0), (200.0, 200.0)));
-        self.scene.push(sprite);
+        // let sprite = Box::new(Sprite::new(texture, (100.0, 100.0), (200.0, 200.0)));
+        let sprite =
+            Object::new("grass", Transform { pos: (100.0, 100.0), size: (200.0, 200.0) })
+                .with_texture(texture);
+
+        self.scene.add(sprite);
 
         let mut clock = Clock::new(&self.window).expect("Failed to init clock");
 
@@ -145,7 +153,7 @@ impl<'a> Canvas<'a>
         loop
         {
             Self::next_animation_frame().await;
-            let _dt = clock.tick();
+            let dt = clock.tick();
 
             let output = match self.surface.get_current_texture()
             {
@@ -157,9 +165,16 @@ impl<'a> Canvas<'a>
                 }
             };
 
+            {
+                let input = self.input.borrow();
+                self.scene.tick(&mut ComponentContext {
+                    input: &input,
+                }, dt);
+            }
+
             let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
             self.renderer.draw(
-                &self.scene,
+                self.scene.objects(),
                 &self.device,
                 &self.queue,
                 &view,

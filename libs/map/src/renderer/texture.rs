@@ -141,6 +141,8 @@ pub struct Sprite
     dims: (f32, f32),
 }
 
+
+// tmp sprite for render testing
 impl Sprite
 {
     pub fn new(texture: TextureAsset, location: (f32, f32), dimensions: (f32, f32)) -> Self
@@ -160,8 +162,12 @@ impl Renderable for Sprite
         Mesh::quad(self.loc.0, self.loc.1, self.dims.0, self.dims.1, dims)
     }
 
-    fn texture(&self) -> &TextureAsset
+    fn texture(&self) -> Option<&TextureAsset>
     {
-        &self.texture
+        Some(&self.texture)
+    }
+
+    fn z_index(&self) -> super::ZIndex {
+        0
     }
 }

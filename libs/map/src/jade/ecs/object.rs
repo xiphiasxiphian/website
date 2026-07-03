@@ -1,12 +1,13 @@
 use std::mem;
 
-use crate::{jade::ecs::{component::{Component, ComponentContext}, transform::Transform}, util::assets::assetpool::TextureAsset};
+use crate::{jade::ecs::{component::{Component, ComponentContext}, transform::Transform}, renderer::{Renderable, ZIndex, mesh::Mesh}, util::assets::assetpool::TextureAsset};
 
+#[derive(Default)]
 pub struct Object
 {
     pub name: String,
-    transform: Transform,
-    z_index: i32,
+    pub transform: Transform,
+    z_index: ZIndex,
     components: Vec<Box<dyn Component>>,
     started: bool,
     texture: Option<TextureAsset>
@@ -22,9 +23,7 @@ impl Object
         Self {
             name: name.to_string(),
             transform,
-            components: vec![],
-            started: false,
-            texture: None,
+            ..Default::default()
         }
     }
 
@@ -66,20 +65,22 @@ impl Object
     {
         if self.started { return; }
 
-        for component in &mut self.components
+        let mut components = mem::take(&mut self.components);
+        for component in &mut components
         {
-            component.start(ctx);
+            component.start(self, ctx);
         }
 
+        self.components = components;
         self.started = true;
     }
 
-    pub fn tick(&mut self, ctx: &mut ComponentContext, dt: f32)
+    pub fn tick(&mut self, ctx: &mut ComponentContext, dt: f64)
     {
         let mut components = mem::take(&mut self.components);
         for component in &mut components
         {
-            component.tick(ctx, dt);
+            component.tick(self, ctx, dt);
         }
 
         self.components = components;
@@ -88,5 +89,18 @@ impl Object
 
 impl Renderable for Object
 {
+    fn texture(&self) -> Option<&TextureAsset>
+    {
+        self.texture.as_ref()
+    }
 
+    fn mesh(&self, canvas_dims: (f32, f32)) -> Mesh
+    {
+        Mesh::quad(self.transform.pos.0, self.transform.pos.1, self.transform.size.0, self.transform.size.1, canvas_dims)
+    }
+
+    fn z_index(&self) -> ZIndex
+    {
+        self.z_index
+    }
 }

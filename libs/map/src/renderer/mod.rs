@@ -9,8 +9,7 @@ use wgpu::{
 };
 
 use crate::{
-    renderer::{batch::TextureBatch, mesh::Mesh, texture::Texture, vertex::Vertex},
-    util::assets::assetpool::TextureAsset,
+    jade::ecs::object::Object, renderer::{batch::TextureBatch, mesh::Mesh, texture::Texture, vertex::Vertex}, util::assets::assetpool::TextureAsset,
 };
 
 pub mod batch;
@@ -19,10 +18,13 @@ pub mod mesh;
 pub mod texture;
 pub mod vertex;
 
+pub type ZIndex = i32;
+
 pub trait Renderable
 {
     fn mesh(&self, canvas_dims: (f32, f32)) -> Mesh;
-    fn texture(&self) -> &TextureAsset;
+    fn texture(&self) -> Option<&TextureAsset>;
+    fn z_index(&self) -> ZIndex;
 }
 
 pub struct Renderer
@@ -121,7 +123,7 @@ impl Renderer
 
     pub fn draw(
         &mut self,
-        renderables: &[Box<dyn Renderable>],
+        renderables: &[Object],
         device: &Device,
         queue: &Queue,
         view: &TextureView,
@@ -131,7 +133,7 @@ impl Renderer
         for renderable in renderables
         {
             let mesh = renderable.mesh(dims);
-            let texture = renderable.texture();
+            let Some(texture) = renderable.texture() else { continue };
 
             // TODO: again this keying only works because assetpool. improve in future
             let key = Arc::as_ptr(texture);
