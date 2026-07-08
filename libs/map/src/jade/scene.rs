@@ -1,4 +1,4 @@
-use crate::jade::{camera::Camera, ecs::{component::ComponentContext, object::Object}};
+use crate::{input::InputState, jade::{camera::Camera, ecs::{component::ComponentContext, object::Object}}};
 
 pub struct Scene
 {
@@ -32,21 +32,32 @@ impl Scene
 
     pub fn add(&mut self, object: Object) { self.objects.push(object); }
 
-    pub fn start(&mut self, ctx: &mut ComponentContext)
+    pub fn start(&mut self, ctx: &mut ComponentContextIn)
     {
         for object in &mut self.objects
         {
-            object.start(ctx);
+            object.start(&mut ComponentContext {
+                input: ctx.input,
+                camera: &mut self.camera,
+            });
         }
     }
 
-    pub fn tick(&mut self, ctx: &mut ComponentContext, dt: f64)
+    pub fn tick(&mut self, ctx: &mut ComponentContextIn, dt: f64)
     {
         for object in &mut self.objects
         {
-            object.tick(ctx, dt);
+            object.tick(&mut ComponentContext {
+                input: ctx.input,
+                camera: &mut self.camera,
+            }, dt);
         }
     }
 
     pub fn objects(&self) -> &[Object] { &self.objects }
+}
+
+pub struct ComponentContextIn<'a>
+{
+    pub input: &'a InputState,
 }

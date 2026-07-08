@@ -1,6 +1,6 @@
 use std::any::Any;
 
-use crate::{input::InputState, jade::ecs::object::Object};
+use crate::{input::InputState, jade::{camera::Camera, ecs::object::Object}};
 
 pub trait Component: Any
 {
@@ -16,4 +16,5 @@ pub trait Component: Any
 pub struct ComponentContext<'a>
 {
     pub input: &'a InputState,
+    pub camera: &'a mut Camera,
 }
