@@ -1,9 +1,8 @@
 use crate::{
-    input::InputState,
-    jade::{
+    input::InputState, jade::{
         camera::Camera,
         ecs::{component::ComponentContext, object::Object},
-    },
+    }, util::assets::assetpool::AssetPool,
 };
 
 pub struct Scene
@@ -42,10 +41,7 @@ impl Scene
     {
         for object in &mut self.objects
         {
-            object.start(&mut ComponentContext {
-                input: ctx.input,
-                camera: &mut self.camera,
-            });
+            object.start(&mut ctx.resolve(&mut self.camera));
         }
     }
 
@@ -54,10 +50,7 @@ impl Scene
         for object in &mut self.objects
         {
             object.tick(
-                &mut ComponentContext {
-                    input: ctx.input,
-                    camera: &mut self.camera,
-                },
+                &mut ctx.resolve(&mut self.camera),
                 dt,
             );
         }
@@ -69,4 +62,17 @@ impl Scene
 pub struct ComponentContextIn<'a>
 {
     pub input: &'a InputState,
+    pub assetpool: &'a AssetPool,
+}
+
+impl<'a> ComponentContextIn<'a>
+{
+    pub fn resolve(&self, camera: &'a mut Camera) -> ComponentContext<'a>
+    {
+        ComponentContext {
+            input: &self.input,
+            assetpool: &self.assetpool,
+            camera: camera,
+        }
+    }
 }

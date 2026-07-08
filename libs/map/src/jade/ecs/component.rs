@@ -1,8 +1,7 @@
 use std::any::Any;
 
 use crate::{
-    input::InputState,
-    jade::{camera::Camera, ecs::object::Object},
+    input::InputState, jade::{camera::Camera, ecs::object::Object}, util::assets::assetpool::AssetPool,
 };
 
 pub trait Component: Any
@@ -19,5 +18,6 @@ pub trait Component: Any
 pub struct ComponentContext<'a>
 {
     pub input: &'a InputState,
+    pub assetpool: &'a AssetPool,
     pub camera: &'a mut Camera,
 }

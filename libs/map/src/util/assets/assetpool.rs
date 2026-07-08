@@ -35,7 +35,7 @@ impl AssetPool
         Ok(pool)
     }
 
-    pub fn get_texture(&mut self, id: &'static str) -> Result<TextureAsset, AssetPoolError>
+    pub fn get_texture(&self, id: &'static str) -> Result<TextureAsset, AssetPoolError>
     {
         self.textures
             .get(id)
