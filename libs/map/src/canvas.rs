@@ -147,7 +147,10 @@ impl<'a> Canvas<'a>
         // scene init
         {
             let input = self.input.borrow();
-            self.scene.start(&mut ComponentContextIn { input: &input });
+            self.scene.start(&mut ComponentContextIn {
+                input: &input,
+                assetpool: &self.asset_pool,
+            });
         }
 
         // main render loop
@@ -168,7 +171,10 @@ impl<'a> Canvas<'a>
 
             {
                 let input = self.input.borrow();
-                self.scene.tick(&mut ComponentContextIn { input: &input }, dt);
+                self.scene.tick(&mut ComponentContextIn {
+                    input: &input,
+                    assetpool: &self.asset_pool,
+                }, dt);
             }
 
             let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
