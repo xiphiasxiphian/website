@@ -5,7 +5,6 @@ use wgpu::{
     TextureUsages, TextureView, TextureViewDescriptor,
 };
 
-
 pub struct Texture
 {
     pub texture_size: Extent3d,

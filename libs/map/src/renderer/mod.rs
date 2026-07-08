@@ -9,15 +9,17 @@ use wgpu::{
 };
 
 use crate::{
-    jade::{camera::Camera, ecs::object::Object}, renderer::{batch::TextureBatch, camera_uniform::CameraBuffer, mesh::Mesh, texture::Texture, vertex::Vertex}, util::assets::assetpool::TextureAsset,
+    jade::{camera::Camera, ecs::object::Object},
+    renderer::{batch::TextureBatch, camera_uniform::CameraBuffer, mesh::Mesh, texture::Texture, vertex::Vertex},
+    util::assets::assetpool::TextureAsset,
 };
 
 pub mod batch;
 pub mod bufferpool;
+pub mod camera_uniform;
 pub mod mesh;
 pub mod texture;
 pub mod vertex;
-pub mod camera_uniform;
 
 pub type ZIndex = i32;
 
@@ -71,10 +73,7 @@ impl Renderer
 
         let pipeline_layout = device.create_pipeline_layout(&PipelineLayoutDescriptor {
             label: Some("render_pipeline_layout"),
-            bind_group_layouts: &[
-                &camera_buffer.layout,
-                &texture_bind_group_layout,
-            ],
+            bind_group_layouts: &[&camera_buffer.layout, &texture_bind_group_layout],
             push_constant_ranges: &[],
         });
 
@@ -129,14 +128,7 @@ impl Renderer
         }
     }
 
-    pub fn draw(
-        &mut self,
-        renderables: &[Object],
-        device: &Device,
-        queue: &Queue,
-        view: &TextureView,
-        camera: &Camera,
-    )
+    pub fn draw(&mut self, renderables: &[Object], device: &Device, queue: &Queue, view: &TextureView, camera: &Camera)
     {
         self.camera_buffer.update(queue, camera);
 

@@ -9,10 +9,14 @@ use wgpu::{
 };
 
 use crate::{
-    clock::Clock, input::InputState, jade::{ecs::{
-        components::basic_controller::PlayerController, object::Object,
-        transform::Transform,
-    }, scene::{ComponentContextIn, Scene}}, renderer::Renderer, util::assets::{self, assetpool::AssetPool},
+    clock::Clock,
+    input::InputState,
+    jade::{
+        ecs::{components::basic_controller::PlayerController, object::Object, transform::Transform},
+        scene::{ComponentContextIn, Scene},
+    },
+    renderer::Renderer,
+    util::assets::{self, assetpool::AssetPool},
 };
 
 pub struct Canvas<'a>
@@ -143,9 +147,7 @@ impl<'a> Canvas<'a>
         // scene init
         {
             let input = self.input.borrow();
-            self.scene.start(&mut ComponentContextIn {
-                input: &input,
-            });
+            self.scene.start(&mut ComponentContextIn { input: &input });
         }
 
         // main render loop
@@ -166,9 +168,7 @@ impl<'a> Canvas<'a>
 
             {
                 let input = self.input.borrow();
-                self.scene.tick(&mut ComponentContextIn {
-                    input: &input,
-                }, dt);
+                self.scene.tick(&mut ComponentContextIn { input: &input }, dt);
             }
 
             let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());

@@ -1,5 +1,9 @@
 use glam::Mat4;
-use wgpu::{BindGroup, BindGroupDescriptor, BindGroupEntry, BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingType, Buffer, BufferBindingType, BufferUsages, Device, Queue, ShaderStages, util::{BufferInitDescriptor, DeviceExt}};
+use wgpu::{
+    BindGroup, BindGroupDescriptor, BindGroupEntry, BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry,
+    BindingType, Buffer, BufferBindingType, BufferUsages, Device, Queue, ShaderStages,
+    util::{BufferInitDescriptor, DeviceExt},
+};
 
 use crate::jade::camera::Camera;
 
@@ -16,7 +20,9 @@ impl CameraUniform
 
     pub const fn from_matrix(matrix: Mat4) -> Self
     {
-        Self { view_projection: matrix.to_cols_array_2d() }
+        Self {
+            view_projection: matrix.to_cols_array_2d(),
+        }
     }
 }
 
@@ -67,18 +73,12 @@ impl CameraBuffer
         }
     }
 
-    pub fn update(
-        &self,
-        queue: &Queue,
-        camera: &Camera,
-    )
+    pub fn update(&self, queue: &Queue, camera: &Camera)
     {
         queue.write_buffer(
             &self.buffer,
             0,
-            bytemuck::bytes_of(
-                &CameraUniform::from_matrix(camera.view_projection())
-            )
+            bytemuck::bytes_of(&CameraUniform::from_matrix(camera.view_projection())),
         );
     }
 }

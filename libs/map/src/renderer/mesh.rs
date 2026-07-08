@@ -12,12 +12,24 @@ impl Mesh
     {
         Self {
             vertices: vec![
-                Vertex { position: [x,     y    ], texture_coords: [0.0, 0.0] },
-                Vertex { position: [x + w, y    ], texture_coords: [1.0, 0.0] },
-                Vertex { position: [x + w, y + h], texture_coords: [1.0, 1.0] },
-                Vertex { position: [x,     y + h], texture_coords: [0.0, 1.0] },
+                Vertex {
+                    position: [x, y],
+                    texture_coords: [0.0, 0.0],
+                },
+                Vertex {
+                    position: [x + w, y],
+                    texture_coords: [1.0, 0.0],
+                },
+                Vertex {
+                    position: [x + w, y + h],
+                    texture_coords: [1.0, 1.0],
+                },
+                Vertex {
+                    position: [x, y + h],
+                    texture_coords: [0.0, 1.0],
+                },
             ],
             indices: vec![0, 1, 2, 0, 2, 3],
         }
-}
+    }
 }

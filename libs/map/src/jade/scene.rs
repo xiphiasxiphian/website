@@ -1,4 +1,10 @@
-use crate::{input::InputState, jade::{camera::Camera, ecs::{component::ComponentContext, object::Object}}};
+use crate::{
+    input::InputState,
+    jade::{
+        camera::Camera,
+        ecs::{component::ComponentContext, object::Object},
+    },
+};
 
 pub struct Scene
 {
@@ -12,7 +18,7 @@ impl Scene
     {
         Self {
             objects: vec![],
-            camera: Camera::new(viewport_dims)
+            camera: Camera::new(viewport_dims),
         }
     }
 
@@ -24,7 +30,7 @@ impl Scene
 
     pub fn with_objects<I>(mut self, objects: I) -> Self
     where
-        I: IntoIterator<Item = Object>
+        I: IntoIterator<Item = Object>,
     {
         self.objects.extend(objects);
         self
@@ -47,10 +53,13 @@ impl Scene
     {
         for object in &mut self.objects
         {
-            object.tick(&mut ComponentContext {
-                input: ctx.input,
-                camera: &mut self.camera,
-            }, dt);
+            object.tick(
+                &mut ComponentContext {
+                    input: ctx.input,
+                    camera: &mut self.camera,
+                },
+                dt,
+            );
         }
     }
 

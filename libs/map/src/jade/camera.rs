@@ -14,40 +14,23 @@ impl Camera
         Self {
             position: Vec2::ZERO,
             zoom: 1.0,
-            viewport: Vec2::new(viewport_dims.0, viewport_dims.1)
+            viewport: Vec2::new(viewport_dims.0, viewport_dims.1),
         }
     }
 
-    pub fn update_viewport(&mut self, (w, h): (f32, f32))
-    {
-        self.viewport = Vec2::new(w, h)
-    }
+    pub fn update_viewport(&mut self, (w, h): (f32, f32)) { self.viewport = Vec2::new(w, h) }
 
     pub fn view_projection(&self) -> Mat4
     {
-        let prog = orthographic(
-            0.0,
-            self.viewport.x,
-            self.viewport.y,
-            0.0,
-            -1.0,
-            1.0
-        );
+        let prog = orthographic(0.0, self.viewport.x, self.viewport.y, 0.0, -1.0, 1.0);
 
         let half = self.viewport / 2.0;
-        let view = Mat4::from_scale(
-            Vec3::new(
-                self.zoom,
-                self.zoom,
-                1.0
-            )
-        ) * Mat4::from_translation(
-            Vec3::new(
+        let view = Mat4::from_scale(Vec3::new(self.zoom, self.zoom, 1.0))
+            * Mat4::from_translation(Vec3::new(
                 -self.position.x + half.x / self.zoom,
                 -self.position.y + half.y / self.zoom,
-                0.0
-            )
-        );
+                0.0,
+            ));
 
         prog * view
     }

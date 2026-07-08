@@ -1,6 +1,9 @@
 use std::any::Any;
 
-use crate::{input::InputState, jade::{camera::Camera, ecs::object::Object}};
+use crate::{
+    input::InputState,
+    jade::{camera::Camera, ecs::object::Object},
+};
 
 pub trait Component: Any
 {
