@@ -1,5 +1,7 @@
 use std::mem;
 
+use itertools::Itertools;
+
 use crate::{
     jade::ecs::{
         component::{Component, ComponentContext},
@@ -40,6 +42,20 @@ impl Object
     pub fn with_z_index(mut self, z_index: i32) -> Self
     {
         self.z_index = z_index;
+        self
+    }
+
+    pub fn with_component<C: Component>(mut self, component: C) -> Self
+    {
+        self.components.push(Box::new(component));
+        self
+    }
+
+    pub fn with_components<I>(mut self, components: I) -> Self
+    where
+        I: IntoIterator<Item = Box<dyn Component>>
+    {
+        self.components.extend(components);
         self
     }
 
@@ -99,10 +115,10 @@ impl Renderable for Object
     fn mesh(&self, canvas_dims: (f32, f32)) -> Mesh
     {
         Mesh::quad(
-            self.transform.pos.0,
-            self.transform.pos.1,
-            self.transform.size.0,
-            self.transform.size.1,
+            self.transform.pos.0 as f32,
+            self.transform.pos.1 as f32,
+            self.transform.size.0 as f32,
+            self.transform.size.1 as f32,
             canvas_dims,
         )
     }
