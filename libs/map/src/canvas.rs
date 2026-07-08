@@ -171,10 +171,13 @@ impl<'a> Canvas<'a>
 
             {
                 let input = self.input.borrow();
-                self.scene.tick(&mut ComponentContextIn {
-                    input: &input,
-                    assetpool: &self.asset_pool,
-                }, dt);
+                self.scene.tick(
+                    &mut ComponentContextIn {
+                        input: &input,
+                        assetpool: &self.asset_pool,
+                    },
+                    dt,
+                );
             }
 
             let view = output.texture.create_view(&wgpu::TextureViewDescriptor::default());

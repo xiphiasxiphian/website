@@ -1,8 +1,10 @@
 use crate::{
-    input::InputState, jade::{
+    input::InputState,
+    jade::{
         camera::Camera,
         ecs::{component::ComponentContext, object::Object},
-    }, util::assets::assetpool::AssetPool,
+    },
+    util::assets::assetpool::AssetPool,
 };
 
 pub struct Scene
@@ -49,10 +51,7 @@ impl Scene
     {
         for object in &mut self.objects
         {
-            object.tick(
-                &mut ctx.resolve(&mut self.camera),
-                dt,
-            );
+            object.tick(&mut ctx.resolve(&mut self.camera), dt);
         }
     }
 
