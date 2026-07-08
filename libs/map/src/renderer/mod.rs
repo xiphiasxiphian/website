@@ -9,9 +9,7 @@ use wgpu::{
 };
 
 use crate::{
-    jade::ecs::object::Object,
-    renderer::{batch::TextureBatch, mesh::Mesh, texture::Texture, vertex::Vertex},
-    util::assets::assetpool::TextureAsset,
+    jade::{camera::Camera, ecs::object::Object}, renderer::{batch::TextureBatch, camera_uniform::CameraBuffer, mesh::Mesh, texture::Texture, vertex::Vertex}, util::assets::assetpool::TextureAsset,
 };
 
 pub mod batch;
@@ -33,6 +31,7 @@ pub trait Renderable
 pub struct Renderer
 {
     pub texture_bind_group_layout: BindGroupLayout,
+    pub camera_buffer: CameraBuffer,
     pipeline: RenderPipeline,
 
     // TODO: right now this works because the assetpool ensures the pointers are constant,
@@ -44,6 +43,8 @@ impl Renderer
 {
     pub fn new(device: &Device, surface_format: TextureFormat) -> Self
     {
+        let camera_buffer = CameraBuffer::new(device);
+
         let texture_bind_group_layout = device.create_bind_group_layout(&BindGroupLayoutDescriptor {
             label: Some("texture_bind_group_layout"),
             entries: &[
@@ -70,7 +71,10 @@ impl Renderer
 
         let pipeline_layout = device.create_pipeline_layout(&PipelineLayoutDescriptor {
             label: Some("render_pipeline_layout"),
-            bind_group_layouts: &[&texture_bind_group_layout],
+            bind_group_layouts: &[
+                &camera_buffer.layout,
+                &texture_bind_group_layout,
+            ],
             push_constant_ranges: &[],
         });
 
@@ -119,13 +123,23 @@ impl Renderer
 
         Self {
             texture_bind_group_layout,
+            camera_buffer,
             pipeline,
             batches: HashMap::new(),
         }
     }
 
-    pub fn draw(&mut self, renderables: &[Object], device: &Device, queue: &Queue, view: &TextureView)
+    pub fn draw(
+        &mut self,
+        renderables: &[Object],
+        device: &Device,
+        queue: &Queue,
+        view: &TextureView,
+        camera: &Camera,
+    )
     {
+        self.camera_buffer.update(queue, camera);
+
         for renderable in renderables
         {
             let mesh = renderable.mesh();
@@ -169,6 +183,7 @@ impl Renderer
             });
 
             pass.set_pipeline(&self.pipeline);
+            pass.set_bind_group(0, &self.camera_buffer.bind_group, &[]);
 
             for (_, (texture, batch)) in &mut self.batches
             {
@@ -178,7 +193,7 @@ impl Renderer
                     continue;
                 };
 
-                pass.set_bind_group(0, &texture.bind_group, &[]);
+                pass.set_bind_group(1, &texture.bind_group, &[]);
                 pass.set_vertex_buffer(0, batch.pool.vertex_buffer());
                 pass.set_index_buffer(batch.pool.index_buffer(), IndexFormat::Uint32);
                 pass.draw_indexed(0..slice.0, 0, 0..1);
