@@ -61,10 +61,7 @@ impl Object
             .find_map(|x| x.as_any_mut().downcast_mut::<C>())
     }
 
-    pub fn has_component<C: Component>(&self) -> bool
-    {
-        self.get_component::<C>().is_some()
-    }
+    pub fn has_component<C: Component>(&self) -> bool { self.get_component::<C>().is_some() }
 
     pub fn start(&mut self, ctx: &mut ComponentContext)
     {
@@ -97,10 +94,7 @@ impl Object
 
 impl Renderable for Object
 {
-    fn texture(&self) -> Option<&TextureAsset>
-    {
-        self.texture.as_ref()
-    }
+    fn texture(&self) -> Option<&TextureAsset> { self.texture.as_ref() }
 
     fn mesh(&self, canvas_dims: (f32, f32)) -> Mesh
     {
@@ -113,8 +107,5 @@ impl Renderable for Object
         )
     }
 
-    fn z_index(&self) -> ZIndex
-    {
-        self.z_index
-    }
+    fn z_index(&self) -> ZIndex { self.z_index }
 }

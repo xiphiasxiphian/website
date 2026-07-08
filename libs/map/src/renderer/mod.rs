@@ -187,8 +187,5 @@ impl Renderer
         queue.submit(std::iter::once(encoder.finish()));
     }
 
-    pub fn remove_batch(&mut self, texture: &Texture)
-    {
-        self.batches.remove(&(texture as *const Texture));
-    }
+    pub fn remove_batch(&mut self, texture: &Texture) { self.batches.remove(&(texture as *const Texture)); }
 }

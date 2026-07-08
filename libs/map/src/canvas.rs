@@ -1,31 +1,20 @@
-use std::cell::RefCell;
-use std::rc::Rc;
+use std::{cell::RefCell, rc::Rc};
 
-use log::info;
-use log::warn;
+use log::{info, warn};
 use wasm_bindgen::JsCast;
-use web_sys::HtmlCanvasElement;
-use web_sys::Window;
-use wgpu::Adapter;
-use wgpu::Device;
-use wgpu::MemoryHints;
-use wgpu::PowerPreference;
-use wgpu::Queue;
-use wgpu::Surface;
+use web_sys::{HtmlCanvasElement, Window};
 use wgpu::{
-    DeviceDescriptor, Instance, Limits, PresentMode, RequestAdapterOptions, SurfaceConfiguration, SurfaceTarget,
-    TextureUsages,
+    Adapter, Device, DeviceDescriptor, Instance, Limits, MemoryHints, PowerPreference, PresentMode, Queue,
+    RequestAdapterOptions, Surface, SurfaceConfiguration, SurfaceTarget, TextureUsages,
 };
 
-use crate::clock::Clock;
-use crate::input::InputState;
-use crate::jade::ecs::component::ComponentContext;
-use crate::jade::ecs::object::Object;
-use crate::jade::ecs::scene::Scene;
-use crate::jade::ecs::transform::Transform;
-use crate::renderer::Renderer;
-use crate::util::assets;
-use crate::util::assets::assetpool::AssetPool;
+use crate::{
+    clock::Clock,
+    input::InputState,
+    jade::ecs::{component::ComponentContext, object::Object, scene::Scene, transform::Transform},
+    renderer::Renderer,
+    util::{assets, assets::assetpool::AssetPool},
+};
 
 pub struct Canvas<'a>
 {

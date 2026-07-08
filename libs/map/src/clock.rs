@@ -30,8 +30,5 @@ impl Clock
         return self.delta;
     }
 
-    pub fn delta(&self) -> f64
-    {
-        self.delta
-    }
+    pub fn delta(&self) -> f64 { self.delta }
 }

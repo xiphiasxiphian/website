@@ -156,18 +156,9 @@ impl Sprite
 
 impl Renderable for Sprite
 {
-    fn mesh(&self, dims: (f32, f32)) -> Mesh
-    {
-        Mesh::quad(self.loc.0, self.loc.1, self.dims.0, self.dims.1, dims)
-    }
+    fn mesh(&self, dims: (f32, f32)) -> Mesh { Mesh::quad(self.loc.0, self.loc.1, self.dims.0, self.dims.1, dims) }
 
-    fn texture(&self) -> Option<&TextureAsset>
-    {
-        Some(&self.texture)
-    }
+    fn texture(&self) -> Option<&TextureAsset> { Some(&self.texture) }
 
-    fn z_index(&self) -> super::ZIndex
-    {
-        0
-    }
+    fn z_index(&self) -> super::ZIndex { 0 }
 }

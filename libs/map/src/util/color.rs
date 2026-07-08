@@ -10,10 +10,7 @@ pub struct Color
 
 impl Color
 {
-    pub fn new(r: u8, g: u8, b: u8, a: u8) -> Self
-    {
-        Self { r, g, b, a }
-    }
+    pub fn new(r: u8, g: u8, b: u8, a: u8) -> Self { Self { r, g, b, a } }
 
     pub fn from_hex(code: &str, a: u8) -> Option<Self>
     {

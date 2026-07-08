@@ -8,10 +8,7 @@ pub struct Scene
 
 impl Scene
 {
-    pub fn add(&mut self, object: Object)
-    {
-        self.objects.push(object);
-    }
+    pub fn add(&mut self, object: Object) { self.objects.push(object); }
 
     pub fn start(&mut self, ctx: &mut ComponentContext)
     {
@@ -29,8 +26,5 @@ impl Scene
         }
     }
 
-    pub fn objects(&self) -> &[Object]
-    {
-        &self.objects
-    }
+    pub fn objects(&self) -> &[Object] { &self.objects }
 }
