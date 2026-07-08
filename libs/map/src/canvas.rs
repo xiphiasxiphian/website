@@ -10,7 +10,7 @@ use wgpu::{
 
 use crate::{
     clock::Clock, input::InputState, jade::{ecs::{
-        component::ComponentContext, components::basic_controller::PlayerController, object::Object,
+        components::basic_controller::PlayerController, object::Object,
         transform::Transform,
     }, scene::{ComponentContextIn, Scene}}, renderer::Renderer, util::assets::{self, assetpool::AssetPool},
 };
