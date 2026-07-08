@@ -23,7 +23,7 @@ impl Camera
         self.viewport = Vec2::new(w, h)
     }
 
-    pub fn view_projection(&mut self) -> Mat4
+    pub fn view_projection(&self) -> Mat4
     {
         let prog = orthographic(
             0.0,

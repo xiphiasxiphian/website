@@ -1,5 +1,7 @@
 use glam::Mat4;
-use wgpu::{BindGroup, BindGroupDescriptor, BindGroupEntry, BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingType, Buffer, BufferBindingType, BufferUsages, Device, ShaderStages, util::{BufferInitDescriptor, DeviceExt}};
+use wgpu::{BindGroup, BindGroupDescriptor, BindGroupEntry, BindGroupLayout, BindGroupLayoutDescriptor, BindGroupLayoutEntry, BindingType, Buffer, BufferBindingType, BufferUsages, Device, Queue, ShaderStages, util::{BufferInitDescriptor, DeviceExt}};
+
+use crate::jade::camera::Camera;
 
 #[repr(C)]
 #[derive(Clone, Copy, bytemuck::Pod, bytemuck::Zeroable)]
@@ -63,5 +65,20 @@ impl CameraBuffer
             bind_group,
             layout,
         }
+    }
+
+    pub fn update(
+        &self,
+        queue: &Queue,
+        camera: &Camera,
+    )
+    {
+        queue.write_buffer(
+            &self.buffer,
+            0,
+            bytemuck::bytes_of(
+                &CameraUniform::from_matrix(camera.view_projection())
+            )
+        );
     }
 }
