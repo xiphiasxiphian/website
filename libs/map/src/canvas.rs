@@ -50,8 +50,8 @@ impl<'a> Canvas<'a>
         let canvas: HtmlCanvasElement = element
             .dyn_into::<HtmlCanvasElement>()
             .expect("Element is not a canvas");
-        let canvas_width = canvas.width();
-        let canvas_height = canvas.height();
+
+        let dims @ (canvas_width, canvas_height) = (canvas.width(), canvas.height());
 
         info!("Attempting to attach {}x{} canvas", canvas_width, canvas_height);
 
@@ -109,14 +109,14 @@ impl<'a> Canvas<'a>
 
         Self {
             window,
-            dims: (canvas_width, canvas_height),
+            dims,
             instance,
             adapter,
             surface,
             device,
             queue,
             renderer,
-            scene: Scene::default(),
+            scene: Scene::new((canvas_width as f32, canvas_height as f32)),
             input,
             asset_pool,
         }
@@ -173,6 +173,7 @@ impl<'a> Canvas<'a>
                 &self.device,
                 &self.queue,
                 &view,
+                &self.scene.camera,
             );
 
             output.present();

@@ -1,13 +1,21 @@
-use crate::jade::ecs::{component::ComponentContext, object::Object};
+use crate::jade::{camera::Camera, ecs::{component::ComponentContext, object::Object}};
 
-#[derive(Default)]
 pub struct Scene
 {
     objects: Vec<Object>,
+    pub camera: Camera,
 }
 
 impl Scene
 {
+    pub fn new(viewport_dims: (f32, f32)) -> Self
+    {
+        Self {
+            objects: vec![],
+            camera: Camera::new(viewport_dims)
+        }
+    }
+
     pub fn with_object(mut self, object: Object) -> Self
     {
         self.objects.push(object);
