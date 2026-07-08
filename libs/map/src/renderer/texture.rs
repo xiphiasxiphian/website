@@ -132,33 +132,3 @@ impl Texture
         Self::from_image(&image, device, queue, layout)
     }
 }
-
-// This will probably get moved later
-pub struct Sprite
-{
-    texture: TextureAsset,
-    pub loc: (f32, f32),
-    dims: (f32, f32),
-}
-
-// tmp sprite for render testing
-impl Sprite
-{
-    pub fn new(texture: TextureAsset, location: (f32, f32), dimensions: (f32, f32)) -> Self
-    {
-        Self {
-            texture,
-            loc: location,
-            dims: dimensions,
-        }
-    }
-}
-
-impl Renderable for Sprite
-{
-    fn mesh(&self, dims: (f32, f32)) -> Mesh { Mesh::quad(self.loc.0, self.loc.1, self.dims.0, self.dims.1, dims) }
-
-    fn texture(&self) -> Option<&TextureAsset> { Some(&self.texture) }
-
-    fn z_index(&self) -> super::ZIndex { 0 }
-}

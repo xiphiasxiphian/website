@@ -9,14 +9,10 @@ use wgpu::{
 };
 
 use crate::{
-    clock::Clock,
-    input::InputState,
-    jade::ecs::{
-        component::ComponentContext, components::basic_controller::PlayerController, object::Object, scene::Scene,
+    clock::Clock, input::InputState, jade::{ecs::{
+        component::ComponentContext, components::basic_controller::PlayerController, object::Object,
         transform::Transform,
-    },
-    renderer::Renderer,
-    util::assets::{self, assetpool::AssetPool},
+    }, scene::Scene}, renderer::Renderer, util::assets::{self, assetpool::AssetPool},
 };
 
 pub struct Canvas<'a>
@@ -177,7 +173,6 @@ impl<'a> Canvas<'a>
                 &self.device,
                 &self.queue,
                 &view,
-                (self.dims.0 as f32, self.dims.1 as f32),
             );
 
             output.present();

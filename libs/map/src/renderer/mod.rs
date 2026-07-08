@@ -25,7 +25,7 @@ pub type ZIndex = i32;
 
 pub trait Renderable
 {
-    fn mesh(&self, canvas_dims: (f32, f32)) -> Mesh;
+    fn mesh(&self) -> Mesh;
     fn texture(&self) -> Option<&TextureAsset>;
     fn z_index(&self) -> ZIndex;
 }
@@ -124,11 +124,11 @@ impl Renderer
         }
     }
 
-    pub fn draw(&mut self, renderables: &[Object], device: &Device, queue: &Queue, view: &TextureView, dims: (f32, f32))
+    pub fn draw(&mut self, renderables: &[Object], device: &Device, queue: &Queue, view: &TextureView)
     {
         for renderable in renderables
         {
-            let mesh = renderable.mesh(dims);
+            let mesh = renderable.mesh();
             let Some(texture) = renderable.texture()
             else
             {
