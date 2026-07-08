@@ -110,14 +110,13 @@ impl Renderable for Object
 {
     fn texture(&self) -> Option<&TextureAsset> { self.texture.as_ref() }
 
-    fn mesh(&self, canvas_dims: (f32, f32)) -> Mesh
+    fn mesh(&self) -> Mesh
     {
         Mesh::quad(
             self.transform.pos.0 as f32,
             self.transform.pos.1 as f32,
             self.transform.size.0 as f32,
             self.transform.size.1 as f32,
-            canvas_dims,
         )
     }
 
