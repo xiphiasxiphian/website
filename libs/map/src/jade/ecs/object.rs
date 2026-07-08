@@ -1,7 +1,5 @@
 use std::mem;
 
-use itertools::Itertools;
-
 use crate::{
     jade::ecs::{
         component::{Component, ComponentContext},
@@ -53,7 +51,7 @@ impl Object
 
     pub fn with_components<I>(mut self, components: I) -> Self
     where
-        I: IntoIterator<Item = Box<dyn Component>>
+        I: IntoIterator<Item = Box<dyn Component>>,
     {
         self.components.extend(components);
         self
