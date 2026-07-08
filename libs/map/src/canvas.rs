@@ -130,17 +130,15 @@ impl<'a> Canvas<'a>
     {
         let texture = self.asset_pool.get_texture("grass").unwrap();
 
-        // let sprite = Box::new(Sprite::new(texture, (100.0, 100.0), (200.0, 200.0)));
-        let mut sprite = Object::new(
+        let sprite = Object::new(
             "grass",
             Transform {
                 pos: (100.0, 100.0),
                 size: (200.0, 200.0),
             },
         )
-        .with_texture(texture);
-
-        sprite.add_component(PlayerController { speed: 50.0 });
+        .with_texture(texture)
+        .with_component(PlayerController { speed: 100.0 });
 
         self.scene.add(sprite);
 

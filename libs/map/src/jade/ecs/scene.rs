@@ -8,6 +8,20 @@ pub struct Scene
 
 impl Scene
 {
+    pub fn with_object(mut self, object: Object) -> Self
+    {
+        self.objects.push(object);
+        self
+    }
+
+    pub fn with_objects<I>(mut self, objects: I) -> Self
+    where
+        I: IntoIterator<Item = Object>
+    {
+        self.objects.extend(objects);
+        self
+    }
+
     pub fn add(&mut self, object: Object) { self.objects.push(object); }
 
     pub fn start(&mut self, ctx: &mut ComponentContext)
