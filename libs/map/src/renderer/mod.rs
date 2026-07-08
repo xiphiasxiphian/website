@@ -19,6 +19,7 @@ pub mod bufferpool;
 pub mod mesh;
 pub mod texture;
 pub mod vertex;
+pub mod camera_uniform;
 
 pub type ZIndex = i32;
 
