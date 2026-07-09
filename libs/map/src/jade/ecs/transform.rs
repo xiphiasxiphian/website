@@ -12,7 +12,7 @@ impl Transform
 {
     pub fn with_anchor(pos: Position, size: Size, anchor: Anchor) -> Self
     {
-        let real_pos = anchor.translate_pos(pos, size);
+        let real_pos = anchor.to_top_left(pos, size);
         Transform { pos: real_pos, size }
     }
 
@@ -65,7 +65,7 @@ pub enum Anchor
 
 impl Anchor
 {
-    fn translate_pos(self, pos @ (x, y): Position, size @ (w, h): Size) -> Position
+    pub fn to_top_left(self, pos @ (x, y): Position, (w, h): Size) -> Position
     {
         match self
         {
@@ -74,6 +74,19 @@ impl Anchor
             Anchor::BottomLeft => (x, y - h),
             Anchor::BottomRight => (x - w, y - h),
             Anchor::Center => (x - (w / 2.0), y - (h / 2.0)),
+        }
+    }
+
+    pub fn to_anchor(self, target: Self, old_pos : Position, size @ (w, h): Size) -> Position
+    {
+        let pos @ (x, y) = self.to_top_left(old_pos, size);
+        match target
+        {
+            Anchor::TopLeft => pos,
+            Anchor::TopRight => (x + w, y),
+            Anchor::BottomLeft => (x, y + h),
+            Anchor::BottomRight => (x + w, y + h),
+            Anchor::Center => (x + (w / 2.0), y + (h / 2.0)),
         }
     }
 }

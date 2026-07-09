@@ -10,7 +10,7 @@ use wgpu::{
 
 use crate::{
     clock::Clock, input::{InputState, key::Key}, jade::{
-        ecs::{components::basic_controller::PlayerController, object::Object, transform::{Anchor, Transform}}, scene::{ComponentContextIn, Scene},
+        ecs::{components::{basic_controller::PlayerController, camera::camera_lock::CameraLock}, object::Object, transform::{Anchor, Transform}}, scene::{ComponentContextIn, Scene},
     }, renderer::Renderer, util::assets::{self, assetpool::AssetPool},
 };
 
@@ -134,8 +134,20 @@ impl<'a> Canvas<'a>
                     Anchor::Center,
                 ),
             )
+            .with_texture(texture.clone())
+            .with_component(PlayerController { speed: 100.0 })
+            .with_component(CameraLock::default())
+        );
+
+        self.scene.add(
+            Object::new(
+                "grass2",
+                Transform {
+                    pos: (200.0, 200.0),
+                    size: (100.0, 100.0)
+                }
+            )
             .with_texture(texture)
-            // .with_component(PlayerController { speed: 100.0 })
         );
 
         let mut clock = Clock::new(&self.window).expect("Failed to init clock");
@@ -164,18 +176,6 @@ impl<'a> Canvas<'a>
                     continue;
                 }
             };
-
-            // TMP TESTING
-            {
-                let input = self.input.borrow();
-                let speed = 200.0 * dt as f32;
-                if input.is_key_held(Key::A)  { self.scene.camera.position.x -= speed; }
-                if input.is_key_held(Key::D) { self.scene.camera.position.x += speed; }
-                if input.is_key_held(Key::W)    { self.scene.camera.position.y -= speed; }
-                if input.is_key_held(Key::S)  { self.scene.camera.position.y += speed; }
-                if input.is_key_held(Key::N1)  { self.scene.camera.adjust_zoom(1.1); }
-                if input.is_key_held(Key::N2)  { self.scene.camera.adjust_zoom(0.9); }
-            }
 
             {
                 let input = self.input.borrow();
