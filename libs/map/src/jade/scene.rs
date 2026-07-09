@@ -1,10 +1,8 @@
 use crate::{
-    input::InputState,
-    jade::{
+    input::InputState, jade::{
         camera::Camera,
         ecs::{component::ComponentContext, object::Object},
-    },
-    util::assets::assetpool::AssetPool,
+    }, renderer::Renderable, util::assets::assetpool::AssetPool,
 };
 
 pub struct Scene
@@ -37,7 +35,13 @@ impl Scene
         self
     }
 
-    pub fn add(&mut self, object: Object) { self.objects.push(object); }
+    pub fn add(&mut self, object: Object)
+    {
+        let z = object.z_index();
+        let pos = self.objects.partition_point(|x| x.z_index() <= z);
+
+        self.objects.insert(pos, object);
+    }
 
     pub fn start(&mut self, ctx: &mut ComponentContextIn)
     {
