@@ -1,4 +1,4 @@
-use glam::{Mat4, Vec2, Vec3, camera::rh::proj::vulkan::orthographic};
+use glam::{Mat4, Vec2, Vec3, camera::rh::proj::directx::orthographic};
 
 pub struct Camera
 {

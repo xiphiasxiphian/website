@@ -9,14 +9,10 @@ use wgpu::{
 };
 
 use crate::{
-    clock::Clock,
-    input::InputState,
-    jade::{
+    clock::Clock, input::{InputState, key::Key}, jade::{
         ecs::{components::basic_controller::PlayerController, object::Object, transform::Transform},
         scene::{ComponentContextIn, Scene},
-    },
-    renderer::Renderer,
-    util::assets::{self, assetpool::AssetPool},
+    }, renderer::Renderer, util::assets::{self, assetpool::AssetPool},
 };
 
 pub struct Canvas<'a>
@@ -130,17 +126,17 @@ impl<'a> Canvas<'a>
     {
         let texture = self.asset_pool.get_texture("grass").unwrap();
 
-        let sprite = Object::new(
-            "grass",
-            Transform {
-                pos: (100.0, 100.0),
-                size: (200.0, 200.0),
-            },
-        )
-        .with_texture(texture)
-        .with_component(PlayerController { speed: 100.0 });
-
-        self.scene.add(sprite);
+        self.scene.add(
+            Object::new(
+                "grass",
+                Transform {
+                    pos: (100.0, 100.0),
+                    size: (200.0, 200.0),
+                },
+            )
+            .with_texture(texture)
+            // .with_component(PlayerController { speed: 100.0 })
+        );
 
         let mut clock = Clock::new(&self.window).expect("Failed to init clock");
 
@@ -168,6 +164,18 @@ impl<'a> Canvas<'a>
                     continue;
                 }
             };
+
+            // TMP TESTING
+            {
+                let input = self.input.borrow();
+                let speed = 200.0 * dt as f32;
+                if input.is_key_held(Key::A)  { self.scene.camera.position.x -= speed; }
+                if input.is_key_held(Key::D) { self.scene.camera.position.x += speed; }
+                if input.is_key_held(Key::W)    { self.scene.camera.position.y -= speed; }
+                if input.is_key_held(Key::S)  { self.scene.camera.position.y += speed; }
+                if input.is_key_held(Key::N1)  { self.scene.camera.zoom += 0.1; }
+                if input.is_key_held(Key::N2)  { self.scene.camera.zoom -= 0.1; }
+            }
 
             {
                 let input = self.input.borrow();
