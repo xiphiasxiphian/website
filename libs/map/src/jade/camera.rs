@@ -3,7 +3,7 @@ use glam::{Mat4, Vec2, Vec3, camera::rh::proj::directx::orthographic};
 pub struct Camera
 {
     pub position: Vec2,
-    pub zoom: f32,
+    zoom: f32,
     viewport: Vec2,
 }
 
@@ -19,6 +19,18 @@ impl Camera
     }
 
     pub fn update_viewport(&mut self, (w, h): (f32, f32)) { self.viewport = Vec2::new(w, h) }
+
+    pub fn set_zoom(&mut self, zoom: f32) -> f32
+    {
+        self.zoom = zoom.max(0.0);
+        self.zoom
+    }
+
+    pub fn adjust_zoom(&mut self, multiplier: f32) -> f32
+    {
+        self.zoom = (self.zoom * multiplier).max(0.0);
+        self.zoom
+    }
 
     pub fn view_projection(&self) -> Mat4
     {

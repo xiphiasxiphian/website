@@ -130,7 +130,7 @@ impl<'a> Canvas<'a>
             Object::new(
                 "grass",
                 Transform {
-                    pos: (100.0, 100.0),
+                    pos: (-100.0, -100.0),
                     size: (200.0, 200.0),
                 },
             )
@@ -173,8 +173,8 @@ impl<'a> Canvas<'a>
                 if input.is_key_held(Key::D) { self.scene.camera.position.x += speed; }
                 if input.is_key_held(Key::W)    { self.scene.camera.position.y -= speed; }
                 if input.is_key_held(Key::S)  { self.scene.camera.position.y += speed; }
-                if input.is_key_held(Key::N1)  { self.scene.camera.zoom += 0.1; }
-                if input.is_key_held(Key::N2)  { self.scene.camera.zoom -= 0.1; }
+                if input.is_key_held(Key::N1)  { self.scene.camera.adjust_zoom(1.1); }
+                if input.is_key_held(Key::N2)  { self.scene.camera.adjust_zoom(0.9); }
             }
 
             {
