@@ -10,8 +10,7 @@ use wgpu::{
 
 use crate::{
     clock::Clock, input::{InputState, key::Key}, jade::{
-        ecs::{components::basic_controller::PlayerController, object::Object, transform::Transform},
-        scene::{ComponentContextIn, Scene},
+        ecs::{components::basic_controller::PlayerController, object::Object, transform::{Anchor, Transform}}, scene::{ComponentContextIn, Scene},
     }, renderer::Renderer, util::assets::{self, assetpool::AssetPool},
 };
 
@@ -129,10 +128,11 @@ impl<'a> Canvas<'a>
         self.scene.add(
             Object::new(
                 "grass",
-                Transform {
-                    pos: (-100.0, -100.0),
-                    size: (200.0, 200.0),
-                },
+                Transform::with_anchor(
+                    (0.0, 0.0),
+                    (200.0, 200.0),
+                    Anchor::Center,
+                ),
             )
             .with_texture(texture)
             // .with_component(PlayerController { speed: 100.0 })
