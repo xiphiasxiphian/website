@@ -16,8 +16,6 @@ impl Transform
         Transform { pos: real_pos, size }
     }
 
-
-
     pub fn scaled(&self, factor: f64) -> Self
     {
         let mut new = *self;
@@ -28,10 +26,7 @@ impl Transform
 
     pub fn scale(&mut self, factor: f64)
     {
-        self.size = (
-            (self.size.0 * factor).max(0.0),
-            (self.size.1 * factor).max(0.0),
-        )
+        self.size = ((self.size.0 * factor).max(0.0), (self.size.1 * factor).max(0.0))
     }
 
     pub fn stretched(&self, x_factor: f64, y_factor: f64) -> Self
@@ -44,10 +39,7 @@ impl Transform
 
     pub fn stretch(&mut self, x_factor: f64, y_factor: f64)
     {
-        self.size = (
-            (self.size.0 * x_factor).max(0.0),
-            (self.size.1 * y_factor).max(0.0),
-        )
+        self.size = ((self.size.0 * x_factor).max(0.0), (self.size.1 * y_factor).max(0.0))
     }
 }
 
@@ -61,7 +53,6 @@ pub enum Anchor
     BottomRight,
     Center,
 }
-
 
 impl Anchor
 {
@@ -77,7 +68,7 @@ impl Anchor
         }
     }
 
-    pub fn to_anchor(self, target: Self, old_pos : Position, size @ (w, h): Size) -> Position
+    pub fn to_anchor(self, target: Self, old_pos: Position, size @ (w, h): Size) -> Position
     {
         let pos @ (x, y) = self.to_top_left(old_pos, size);
         match target

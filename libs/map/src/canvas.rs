@@ -9,9 +9,18 @@ use wgpu::{
 };
 
 use crate::{
-    clock::Clock, input::InputState, jade::{
-        ecs::{components::{basic_controller::PlayerController, camera::camera_lock::CameraLock}, object::Object, transform::{Anchor, Transform}}, scene::{ComponentContextIn, Scene},
-    }, renderer::Renderer, util::assets::{self, assetpool::AssetPool},
+    clock::Clock,
+    input::InputState,
+    jade::{
+        ecs::{
+            components::{basic_controller::PlayerController, camera::camera_lock::CameraLock},
+            object::Object,
+            transform::{Anchor, Transform},
+        },
+        scene::{ComponentContextIn, Scene},
+    },
+    renderer::Renderer,
+    util::assets::{self, assetpool::AssetPool},
 };
 
 pub struct Canvas<'a>
@@ -128,15 +137,11 @@ impl<'a> Canvas<'a>
         self.scene.add(
             Object::new(
                 "grass",
-                Transform::with_anchor(
-                    (0.0, 0.0),
-                    (200.0, 200.0),
-                    Anchor::Center,
-                ),
+                Transform::with_anchor((0.0, 0.0), (200.0, 200.0), Anchor::Center),
             )
             .with_texture(texture.clone())
             .with_component(PlayerController { speed: 100.0 })
-            .with_component(CameraLock::default())
+            .with_component(CameraLock::default()),
         );
 
         self.scene.add(
@@ -144,10 +149,10 @@ impl<'a> Canvas<'a>
                 "grass2",
                 Transform {
                     pos: (200.0, 200.0),
-                    size: (100.0, 100.0)
-                }
+                    size: (100.0, 100.0),
+                },
             )
-            .with_texture(texture)
+            .with_texture(texture),
         );
 
         let mut clock = Clock::new(&self.window).expect("Failed to init clock");

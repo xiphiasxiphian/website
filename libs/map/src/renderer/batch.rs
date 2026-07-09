@@ -49,7 +49,8 @@ impl TextureBatch
 
     pub fn flush(&mut self, queue: &Queue) -> Option<BufferSlice>
     {
-        if self.vertices.is_empty() {
+        if self.vertices.is_empty()
+        {
             return None;
         }
 
