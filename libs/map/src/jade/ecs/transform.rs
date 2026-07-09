@@ -1,7 +1,7 @@
 type Position = (f64, f64);
 type Size = (f64, f64);
 
-#[derive(Debug, Default, PartialEq, PartialOrd)]
+#[derive(Debug, Default, PartialEq, PartialOrd, Copy, Clone)]
 pub struct Transform
 {
     pub pos: Position,
@@ -14,6 +14,40 @@ impl Transform
     {
         let real_pos = anchor.translate_pos(pos, size);
         Transform { pos: real_pos, size }
+    }
+
+
+
+    pub fn scaled(&self, factor: f64) -> Self
+    {
+        let mut new = *self;
+        new.scale(factor);
+
+        new
+    }
+
+    pub fn scale(&mut self, factor: f64)
+    {
+        self.size = (
+            (self.size.0 * factor).max(0.0),
+            (self.size.1 * factor).max(0.0),
+        )
+    }
+
+    pub fn stretched(&self, x_factor: f64, y_factor: f64) -> Self
+    {
+        let mut new = *self;
+        new.stretch(x_factor, y_factor);
+
+        new
+    }
+
+    pub fn stretch(&mut self, x_factor: f64, y_factor: f64)
+    {
+        self.size = (
+            (self.size.0 * x_factor).max(0.0),
+            (self.size.1 * y_factor).max(0.0),
+        )
     }
 }
 
