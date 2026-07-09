@@ -1,10 +1,8 @@
 use std::any::Any;
 
 use crate::{
-    input::key::Key,
-    jade::ecs::{
-        component::{Component, ComponentContext},
-        object::Object,
+    input::key::Key, jade::ecs::{
+        component::{Component, ComponentContext}, components::default_any_impl, object::Object,
     },
 };
 
@@ -37,6 +35,5 @@ impl Component for PlayerController
         }
     }
 
-    fn as_any(&self) -> &dyn Any { self }
-    fn as_any_mut(&mut self) -> &mut dyn Any { self }
+    default_any_impl!();
 }
