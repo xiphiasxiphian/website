@@ -140,6 +140,7 @@ impl Renderer
             {
                 continue;
             };
+            let z = renderable.z_index();
 
             // TODO: again this keying only works because assetpool. improve in future
             let key = Arc::as_ptr(texture);
@@ -151,7 +152,7 @@ impl Renderer
                 .entry(key)
                 .or_insert_with(|| (Arc::clone(texture), TextureBatch::new(device)));
 
-            batch.1.push(&mesh.vertices, &indices);
+            batch.1.push(&mesh.vertices, &indices, z);
         }
 
         let mut encoder = device.create_command_encoder(&CommandEncoderDescriptor {

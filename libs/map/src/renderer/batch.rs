@@ -9,6 +9,7 @@ use crate::renderer::{
 pub struct TextureBatch
 {
     pub pool: BufferPool,
+    pub min_z: i32,
     vertices: Vec<Vertex>,
     indices: Vec<u32>,
 }
@@ -22,12 +23,13 @@ impl TextureBatch
     {
         Self {
             pool: BufferPool::new(device, Self::MAX_VERTICES, Self::MAX_INDICES),
+            min_z: i32::MAX,
             vertices: Vec::with_capacity(Self::MAX_VERTICES),
             indices: Vec::with_capacity(Self::MAX_INDICES),
         }
     }
 
-    pub fn push(&mut self, vertices: &[Vertex], indices: &[u32]) -> bool
+    pub fn push(&mut self, vertices: &[Vertex], indices: &[u32], z: i32) -> bool
     {
         if !self
             .pool
@@ -40,14 +42,14 @@ impl TextureBatch
         let offset = self.vertices.len() as u32;
         self.vertices.extend_from_slice(vertices);
         self.indices.extend(indices.iter().map(|i| i + offset));
+        self.min_z = self.min_z.min(z);
 
         true
     }
 
     pub fn flush(&mut self, queue: &Queue) -> Option<BufferSlice>
     {
-        if self.vertices.is_empty()
-        {
+        if self.vertices.is_empty() {
             return None;
         }
 
@@ -56,6 +58,7 @@ impl TextureBatch
         self.vertices.clear();
         self.indices.clear();
         self.pool.reset();
+        self.min_z = i32::MAX;
 
         slice
     }
