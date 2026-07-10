@@ -1,8 +1,11 @@
 use crate::{
-    input::InputState, jade::{
+    input::InputState,
+    jade::{
         camera::Camera,
         ecs::{component::ComponentContext, object::Object},
-    }, renderer::Renderable, util::assets::assetpool::AssetPool,
+    },
+    renderer::Renderable,
+    util::assets::assetpool::AssetPool,
 };
 
 pub struct Scene
