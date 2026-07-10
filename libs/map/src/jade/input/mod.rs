@@ -8,7 +8,7 @@ use strum::EnumCount;
 use wasm_bindgen::{JsCast, prelude::Closure};
 use web_sys::{EventTarget, KeyboardEvent, MouseEvent, Window};
 
-use crate::input::{key::Key, mouse::MouseButton};
+use crate::jade::input::{key::Key, mouse::MouseButton};
 
 #[derive(Debug)]
 pub struct InputState

@@ -9,18 +9,13 @@ use wgpu::{
 };
 
 use crate::{
-    clock::Clock,
-    input::InputState,
-    jade::{
+    clock::Clock, jade::{
         ecs::{
             components::{basic_controller::PlayerController, camera::camera_lock::CameraLock},
             object::Object,
             transform::{Anchor, Transform},
-        },
-        scene::{ComponentContextIn, Scene},
-    },
-    renderer::Renderer,
-    util::assets::{self, assetpool::AssetPool},
+        }, input::InputState, scene::{ComponentContextIn, Scene},
+    }, renderer::Renderer, util::assets::{self, assetpool::AssetPool},
 };
 
 pub struct Canvas<'a>

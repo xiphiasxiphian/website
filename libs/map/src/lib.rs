@@ -1,6 +1,5 @@
 mod canvas;
 mod clock;
-mod input;
 mod jade;
 mod renderer;
 mod util;

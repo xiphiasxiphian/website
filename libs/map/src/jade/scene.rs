@@ -1,5 +1,5 @@
 use crate::{
-    input::InputState,
+    jade::input::InputState,
     jade::{
         camera::Camera,
         ecs::{component::ComponentContext, object::Object},

@@ -1,7 +1,7 @@
 use std::any::Any;
 
 use crate::{
-    input::InputState,
+    jade::input::InputState,
     jade::{camera::Camera, ecs::object::Object},
     util::assets::assetpool::AssetPool,
 };
