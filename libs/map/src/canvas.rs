@@ -23,10 +23,10 @@ pub struct Canvas<'a>
     window: Window,
 
     // internal gpu info
-    dims: (u32, u32),
-    instance: Instance,
+    _dims: (u32, u32),
+    _instance: Instance,
     surface: Surface<'a>,
-    adapter: Adapter,
+    _adapter: Adapter,
     device: Device,
     queue: Queue,
 
@@ -112,9 +112,9 @@ impl<'a> Canvas<'a>
 
         Self {
             window,
-            dims,
-            instance,
-            adapter,
+            _dims: dims,
+            _instance: instance,
+            _adapter: adapter,
             surface,
             device,
             queue,

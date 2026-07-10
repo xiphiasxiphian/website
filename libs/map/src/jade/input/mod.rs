@@ -1,12 +1,12 @@
 pub mod key;
 pub mod mouse;
 
-use std::{cell::RefCell, rc::Rc};
+use std::{cell::RefCell, ops::Deref, rc::Rc};
 
 use log::info;
 use strum::EnumCount;
-use wasm_bindgen::{JsCast, prelude::Closure};
-use web_sys::{EventTarget, KeyboardEvent, MouseEvent, Window};
+use wasm_bindgen::{JsCast, JsValue, convert::FromWasmAbi, prelude::Closure};
+use web_sys::{Event, EventTarget, KeyboardEvent, MouseEvent, Window};
 
 use crate::jade::input::{key::Key, mouse::MouseButton};
 
@@ -52,106 +52,109 @@ impl InputState
     pub fn attach_listeners(state: Rc<RefCell<Self>>, window: &mut Window, target: &EventTarget)
     {
         // keydown listener
-        {
-            let state = state.clone();
-            let cb = Closure::<dyn FnMut(KeyboardEvent)>::new(move |e: KeyboardEvent| {
-                // ignore any unknown keys
-                if let Ok(key) = Key::try_from(e.code().as_str())
-                {
-                    let mut s = state.borrow_mut();
-                    s.keys_down[key as usize] = true;
-                    s.keys_held[key as usize] = true;
+        Self::attach_listener(
+            state.clone(),
+            &window,
+            |st| {
+                move |e: KeyboardEvent| {
+                    // ignore any unknown keys
+                    if let Ok(key) = Key::try_from(e.code().as_str())
+                    {
+                        let mut s = st.borrow_mut();
+                        s.keys_down[key as usize] = true;
+                        s.keys_held[key as usize] = true;
+                    }
                 }
-            });
-
-            window
-                .add_event_listener_with_callback("keydown", cb.as_ref().unchecked_ref())
-                .expect("Failed to attach keydown listener");
-
-            info!("Attached keydown listener");
-            cb.forget();
-        }
+            },
+            "keydown",
+        );
 
         // keyup listener
-        {
-            let state = state.clone();
-            let cb = Closure::<dyn FnMut(KeyboardEvent)>::new(move |e: KeyboardEvent| {
-                if let Ok(key) = Key::try_from(e.code().as_str())
-                {
-                    let mut s = state.borrow_mut();
-                    s.keys_up[key as usize] = true;
-                    s.keys_held[key as usize] = false;
+        Self::attach_listener(
+            state.clone(),
+            &window,
+            |st| {
+                move |e: KeyboardEvent| {
+                    if let Ok(key) = Key::try_from(e.code().as_str())
+                    {
+                        let mut s = st.borrow_mut();
+                        s.keys_up[key as usize] = true;
+                        s.keys_held[key as usize] = false;
+                    }
                 }
-            });
+            },
+            "keyup",
+        );
 
-            window
-                .add_event_listener_with_callback("keyup", cb.as_ref().unchecked_ref())
-                .expect("Failed to attach keyup listener");
-
-            info!("Attached keyup listener");
-            cb.forget();
-        }
-
-        // mousemove listener
-        {
-            let state = state.clone();
-            let cb = Closure::<dyn FnMut(MouseEvent)>::new(move |e: MouseEvent| {
-                let mut s = state.borrow_mut();
-                s.mouse_delta = (e.movement_x(), e.movement_y());
-                s.mouse_pos = (e.offset_x(), e.offset_y());
-            });
-
-            window
-                .add_event_listener_with_callback("mousemove", cb.as_ref().unchecked_ref())
-                .expect("Failed to attach mousemove listener");
-
-            info!("Attached mousemove listener");
-            cb.forget();
-        }
+        // mousemove
+        Self::attach_listener(
+            state.clone(),
+            &window,
+            |st| {
+                move |e: MouseEvent| {
+                    let mut s = st.borrow_mut();
+                    s.mouse_delta = (e.movement_x(), e.movement_y());
+                    s.mouse_pos = (e.offset_x(), e.offset_y());
+                }
+            },
+            "mousemove",
+        );
 
         // mousedown
-        {
-            let state = state.clone();
-            let cb = Closure::<dyn FnMut(MouseEvent)>::new(move |e: MouseEvent| {
-                // button: 0=left, 1=middle, 2=right
+        Self::attach_listener(
+            state.clone(),
+            &target,
+            |st| {
+                move |e: MouseEvent| {
+                    // button: 0=left, 1=middle, 2=right
 
-                if let Ok(button) = MouseButton::try_from(e.button())
-                {
-                    let mut s = state.borrow_mut();
-                    let index = button as usize;
-                    s.mouse_buttons[index] = true;
-                    s.mouse_down[index] = true;
+                    if let Ok(button) = MouseButton::try_from(e.button())
+                    {
+                        let mut s = st.borrow_mut();
+                        let index = button as usize;
+                        s.mouse_buttons[index] = true;
+                        s.mouse_down[index] = true;
+                    }
                 }
-            });
-            target
-                .add_event_listener_with_callback("mousedown", cb.as_ref().unchecked_ref())
-                .expect("Failed to attach mousedown listener");
-
-            info!("Attached mousedown listener");
-            cb.forget();
-        }
+            },
+            "mousedown",
+        );
 
         // mouseup
-        {
-            let state = state.clone();
-            let cb = Closure::<dyn FnMut(MouseEvent)>::new(move |e: MouseEvent| {
-                // button: 0=left, 1=middle, 2=right
+        Self::attach_listener(
+            state.clone(),
+            &target,
+            |st| {
+                move |e: MouseEvent| {
+                    // button: 0=left, 1=middle, 2=right
 
-                if let Ok(button) = MouseButton::try_from(e.button())
-                {
-                    let mut s = state.borrow_mut();
-                    let index = button as usize;
-                    s.mouse_buttons[index] = false;
-                    s.mouse_up[index] = true;
+                    if let Ok(button) = MouseButton::try_from(e.button())
+                    {
+                        let mut s = st.borrow_mut();
+                        let index = button as usize;
+                        s.mouse_buttons[index] = false;
+                        s.mouse_up[index] = true;
+                    }
                 }
-            });
-            target
-                .add_event_listener_with_callback("mouseup", cb.as_ref().unchecked_ref())
-                .expect("Failed to attach mouseup listener");
+            },
+            "mouseup",
+        );
+    }
 
-            info!("Attached mouseup listener");
-            cb.forget();
-        }
+    fn attach_listener<A, T, F, F2>(state: Rc<RefCell<Self>>, attachment_target: A, callback: F, listener: &str)
+    where
+        T: FromWasmAbi + AsRef<Event>,
+        F2: FnMut(T) + 'static,
+        F: Fn(Rc<RefCell<Self>>) -> F2,
+        A: AsRef<EventTarget>,
+    {
+        let cb = Closure::<dyn FnMut(T)>::new(callback(state));
+
+        attachment_target.as_ref().add_event_listener_with_callback(listener, cb.as_ref().unchecked_ref())
+            .expect(format!("Failed to attach \'{}\' listener", listener).as_ref());
+
+        info!("Attached \'{}\' listener", listener);
+        cb.forget()
     }
 
     pub fn is_key_down(&self, key: Key) -> bool { self.keys_down[key as usize] }
