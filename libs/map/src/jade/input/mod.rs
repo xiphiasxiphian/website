@@ -145,7 +145,7 @@ impl InputState
     where
         T: FromWasmAbi + AsRef<Event>,
         F2: FnMut(T) + 'static,
-        F: Fn(Rc<RefCell<Self>>) -> F2,
+        F: FnOnce(Rc<RefCell<Self>>) -> F2,
         A: AsRef<EventTarget>,
     {
         let cb = Closure::<dyn FnMut(T)>::new(callback(state));

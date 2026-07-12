@@ -26,7 +26,7 @@ impl Scene
 
     pub fn with_object(mut self, object: Object) -> Self
     {
-        self.objects.push(object);
+        self.add(object);
         self
     }
 
@@ -34,7 +34,11 @@ impl Scene
     where
         I: IntoIterator<Item = Object>,
     {
-        self.objects.extend(objects);
+        for object in objects.into_iter()
+        {
+            self.add(object);
+        }
+
         self
     }
 

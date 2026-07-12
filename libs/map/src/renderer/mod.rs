@@ -147,12 +147,11 @@ impl Renderer
 
             let indices: Vec<u32> = mesh.indices.iter().map(|&i| i as u32).collect();
 
-            let batch = self
-                .batches
+            self.batches
                 .entry(key)
-                .or_insert_with(|| (Arc::clone(texture), TextureBatch::new(device)));
-
-            batch.1.push(&mesh.vertices, &indices, z);
+                .or_insert_with(|| (Arc::clone(texture), TextureBatch::new(device)))
+                .1
+                .push(&mesh.vertices, &indices, z);
         }
 
         let mut encoder = device.create_command_encoder(&CommandEncoderDescriptor {
