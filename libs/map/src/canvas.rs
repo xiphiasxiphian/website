@@ -10,7 +10,7 @@ use wgpu::{
 
 use crate::{
     clock::Clock, jade::{
-        ecs::{
+        audio::SoundHandler, ecs::{
             components::{basic_controller::PlayerController, camera::camera_lock::CameraLock},
             object::Object,
             transform::{Anchor, Transform},
@@ -34,6 +34,7 @@ pub struct Canvas<'a>
     renderer: Renderer,
     scene: Scene,
     input: Rc<RefCell<InputState>>,
+    sound_handler: SoundHandler,
     asset_pool: AssetPool,
 }
 
@@ -110,6 +111,10 @@ impl<'a> Canvas<'a>
             .expect("Failed to init asset pool");
         info!("Successfully init assetpool");
 
+        let sound_handler = SoundHandler::new()
+            .expect("Failed to init sound handler");
+        info!("Succesfully init sound handler");
+
         Self {
             window,
             _dims: dims,
@@ -121,6 +126,7 @@ impl<'a> Canvas<'a>
             renderer,
             scene: Scene::new((canvas_width as f32, canvas_height as f32)),
             input,
+            sound_handler,
             asset_pool,
         }
     }
