@@ -135,6 +135,7 @@ impl<'a> Canvas<'a>
                 Transform::with_anchor((0.0, 0.0), (200.0, 200.0), Anchor::Center),
             )
             .with_texture(texture.clone())
+            .with_z_index(1)
             .with_component(PlayerController { speed: 100.0 })
             .with_component(CameraLock::default()),
         );
