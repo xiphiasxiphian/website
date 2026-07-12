@@ -106,7 +106,7 @@ impl<'a> Canvas<'a>
         let renderer = Renderer::new(&device, surface_format);
         info!("Succesfully init renderer");
 
-        let asset_pool = AssetPool::preloaded(assets::TEXTURES, &device, &queue, &renderer.texture_bind_group_layout)
+        let asset_pool = AssetPool::preloaded(assets::TEXTURES, assets::SOUNDS, &device, &queue, &renderer.texture_bind_group_layout)
             .expect("Failed to init asset pool");
         info!("Successfully init assetpool");
 
