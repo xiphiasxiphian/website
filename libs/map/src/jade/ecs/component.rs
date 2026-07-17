@@ -1,9 +1,7 @@
 use std::any::Any;
 
 use crate::{
-    jade::input::InputState,
-    jade::{camera::Camera, ecs::object::Object},
-    util::assets::assetpool::AssetPool,
+    jade::{audio::SoundHandler, camera::Camera, ecs::object::Object, input::InputState}, util::assets::assetpool::AssetPool,
 };
 
 pub trait Component: Any
@@ -22,4 +20,5 @@ pub struct ComponentContext<'a>
     pub input: &'a InputState,
     pub assetpool: &'a AssetPool,
     pub camera: &'a mut Camera,
+    pub sound: &'a mut SoundHandler,
 }

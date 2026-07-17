@@ -165,6 +165,7 @@ impl<'a> Canvas<'a>
             self.scene.start(&mut ComponentContextIn {
                 input: &input,
                 assetpool: &self.asset_pool,
+                sound: &mut self.sound_handler,
             });
         }
 
@@ -190,6 +191,7 @@ impl<'a> Canvas<'a>
                     &mut ComponentContextIn {
                         input: &input,
                         assetpool: &self.asset_pool,
+                        sound: &mut self.sound_handler,
                     },
                     dt,
                 );
