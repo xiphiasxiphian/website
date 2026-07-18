@@ -1,11 +1,11 @@
 pub mod key;
 pub mod mouse;
 
-use std::{cell::RefCell, ops::Deref, rc::Rc};
+use std::{cell::RefCell, rc::Rc};
 
 use log::info;
 use strum::EnumCount;
-use wasm_bindgen::{JsCast, JsValue, convert::FromWasmAbi, prelude::Closure};
+use wasm_bindgen::{JsCast, convert::FromWasmAbi, prelude::Closure};
 use web_sys::{Event, EventTarget, KeyboardEvent, MouseEvent, Window};
 
 use crate::jade::input::{key::Key, mouse::MouseButton};
@@ -150,7 +150,9 @@ impl InputState
     {
         let cb = Closure::<dyn FnMut(T)>::new(callback(state));
 
-        attachment_target.as_ref().add_event_listener_with_callback(listener, cb.as_ref().unchecked_ref())
+        attachment_target
+            .as_ref()
+            .add_event_listener_with_callback(listener, cb.as_ref().unchecked_ref())
             .expect(format!("Failed to attach \'{}\' listener", listener).as_ref());
 
         info!("Attached \'{}\' listener", listener);

@@ -1,5 +1,12 @@
 use crate::{
-    jade::{audio::SoundHandler, camera::Camera, ecs::{component::ComponentContext, object::Object}, input::InputState}, renderer::Renderable, util::assets::assetpool::AssetPool,
+    jade::{
+        audio::SoundHandler,
+        camera::Camera,
+        ecs::{component::ComponentContext, object::Object},
+        input::InputState,
+    },
+    renderer::Renderable,
+    util::assets::assetpool::AssetPool,
 };
 
 pub struct Scene
@@ -72,10 +79,7 @@ pub struct ComponentContextIn<'a>
 
 impl<'a> ComponentContextIn<'a>
 {
-    pub fn resolve<'b, 'c>(
-        &'c mut self,
-        camera: &'b mut Camera,
-    ) -> ComponentContext<'b>
+    pub fn resolve<'b, 'c>(&'c mut self, camera: &'b mut Camera) -> ComponentContext<'b>
     where
         'a: 'b,
         'c: 'b,

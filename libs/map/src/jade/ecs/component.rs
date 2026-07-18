@@ -1,7 +1,8 @@
 use std::any::Any;
 
 use crate::{
-    jade::{audio::SoundHandler, camera::Camera, ecs::object::Object, input::InputState}, util::assets::assetpool::AssetPool,
+    jade::{audio::SoundHandler, camera::Camera, ecs::object::Object, input::InputState},
+    util::assets::assetpool::AssetPool,
 };
 
 pub trait Component: Any

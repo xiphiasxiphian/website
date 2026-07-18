@@ -73,5 +73,5 @@ pub enum AssetPoolError
     #[error("Image decode error: {0}")]
     ImageError(#[from] ImageError),
     #[error("Sound decode error: {0}")]
-    SoundError(#[from] FromFileError)
+    SoundError(#[from] FromFileError),
 }

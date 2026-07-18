@@ -9,13 +9,19 @@ use wgpu::{
 };
 
 use crate::{
-    clock::Clock, jade::{
-        audio::SoundHandler, ecs::{
+    clock::Clock,
+    jade::{
+        audio::SoundHandler,
+        ecs::{
             components::{basic_controller::PlayerController, camera::camera_lock::CameraLock},
             object::Object,
             transform::{Anchor, Transform},
-        }, input::InputState, scene::{ComponentContextIn, Scene},
-    }, renderer::Renderer, util::assets::{self, assetpool::AssetPool},
+        },
+        input::InputState,
+        scene::{ComponentContextIn, Scene},
+    },
+    renderer::Renderer,
+    util::assets::{self, assetpool::AssetPool},
 };
 
 pub struct Canvas<'a>
@@ -107,12 +113,17 @@ impl<'a> Canvas<'a>
         let renderer = Renderer::new(&device, surface_format);
         info!("Succesfully init renderer");
 
-        let asset_pool = AssetPool::preloaded(assets::TEXTURES, assets::SOUNDS, &device, &queue, &renderer.texture_bind_group_layout)
-            .expect("Failed to init asset pool");
+        let asset_pool = AssetPool::preloaded(
+            assets::TEXTURES,
+            assets::SOUNDS,
+            &device,
+            &queue,
+            &renderer.texture_bind_group_layout,
+        )
+        .expect("Failed to init asset pool");
         info!("Successfully init assetpool");
 
-        let sound_handler = SoundHandler::new()
-            .expect("Failed to init sound handler");
+        let sound_handler = SoundHandler::new().expect("Failed to init sound handler");
         info!("Succesfully init sound handler");
 
         Self {

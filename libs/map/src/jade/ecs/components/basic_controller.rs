@@ -1,10 +1,13 @@
 use std::any::Any;
 
-use crate::jade::{ecs::{
+use crate::jade::{
+    ecs::{
         component::{Component, ComponentContext},
         components::default_any_impl,
         object::Object,
-    }, input::key::Key};
+    },
+    input::key::Key,
+};
 
 pub struct PlayerController
 {
