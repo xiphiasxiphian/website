@@ -4,7 +4,7 @@ import "./styles.css";
 
 const NAV_LINKS: { label: string; href: string }[] = [
   { label: "Home", href: "/" },
-  { label: "TODO", href: "/about" },
+  { label: "Railways", href: "/railways" },
   { label: "TODO", href: "/projects" },
   { label: "TODO", href: "/skills" },
   { label: "TODO", href: "/contact" },
