@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "leaflet": "^1.9.4",
-    "papaparse": "^5.7.0"
+    "papaparse": "^5.7.0",
+    "toml": "^5.0.0"
   }
 }

@@ -1,0 +1,50 @@
+# true -> visited
+# false -> stopped at, but not visited
+# none -> not stopped at
+
+# ---------------------------
+#      Midland Main Line
+# ---------------------------
+
+"STP" = true
+
+# EMR Connect
+"LTN" = false
+"LUT" = false
+"BDM" = false
+"WEL" = true
+
+# SAC Thameslink stopper
+"KTN" = true
+"WHP" = true
+"CRI" = false
+"BCZ" = true
+"HEN" = false
+"MIL" = false
+"ELS" = false
+"RDT" = false
+"SAC" = true
+
+# NOT Intercity
+"KET" = true
+"MHR" = false
+"LEI" = true
+"LBO" = true
+"ATB" = false
+"BEE" = true
+"NOT" = true
+
+# SHF Branch
+"LGE" = false
+"SPO" = false
+"DBY" = false
+"DFI" = false
+"BLP" = false
+"CHD" = true
+"DRO" = false
+"SHF" = true
+
+# Erewash Valley
+"ILN" = false
+"LGM" = false
+"ALF" = false
