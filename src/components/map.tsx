@@ -6,6 +6,7 @@ export interface Station {
   crs: string;
   lat: number;
   long: number;
+  line: string | null;
   status: StationStatus;
 }
 
@@ -36,6 +37,7 @@ export const Map = component$(({ stations }: { stations: Station[] }) => {
 
     stations.forEach(station => {
       const [color, tag] = getStatusInfo(station.status);
+      const line = station.line ? `Line: ${station.line}<br/>` : ""
       L.circleMarker([station.lat, station.long], {
         radius: 4,
         fillColor: color,
@@ -44,7 +46,7 @@ export const Map = component$(({ stations }: { stations: Station[] }) => {
         opacity: 1,
         fillOpacity: 0.8
       })
-      .bindPopup(`<b>${station.name}</b> (${station.crs})<br/>Status: ${tag}`)
+        .bindPopup(`<b>${station.name}</b> (${station.crs})<br/>${line}Status: ${tag}`)
       .addTo(map);
     });
   });

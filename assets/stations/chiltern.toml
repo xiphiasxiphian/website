@@ -1,0 +1,27 @@
+"MYB" = true
+
+"WCX" = true
+"SDH" = true
+"NLT" = true
+"SRU" = true
+"WRU" = true
+"DNM" = true
+"DGC" = false
+"GER" = false
+"SRG" = false
+"BCF" = false
+"HWY" = true
+# SDR
+"PRR" = true
+
+[aylesbury]
+"HOH" = true
+"RIC" = true
+"CLW" = true
+"CFO" = true
+"AMR" = true
+"GMN" = true
+"WND" = true
+# SKM
+# AYS
+# AVP

@@ -1,0 +1,42 @@
+"PAD" = true
+
+"SLO" = true
+"MAI" = true
+"TWY" = true
+
+"RDG" = true
+
+"TLH" = false
+"PAN" = false
+"GOR" = true
+"DID" = false
+
+[elizabeth]
+"AML" = true
+"EAL" = true
+"WEA" = true
+"HAN" = true
+"STL" = true
+"HAY" = true
+"WDT" = false
+"IVR" = true
+"LNY" = false
+"BNM" = false
+"TAP" = false
+
+[thames.greenford]
+"DRG" = false
+"CBP" = false
+"SGN" = false
+"GFD" = true
+
+[thames.windsor]
+"WNC" = true
+
+[thames.marlow]
+"FZP" = false
+"COO" = false
+"BNE" = false
+"MLW" = true
+
+[thames.henley]

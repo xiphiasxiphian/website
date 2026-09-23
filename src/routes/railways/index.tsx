@@ -4,6 +4,7 @@ import Papa from 'papaparse';
 import * as fs from 'fs/promises';
 import { Map, type StationStatus, type Station } from '~/components/map';
 import toml from 'toml';
+import { StationEntry, getStationEntries } from './parser';
 
 export const useStationsData = routeLoader$<Station[]>(async () => {
   try
@@ -12,16 +13,21 @@ export const useStationsData = routeLoader$<Station[]>(async () => {
     const csvText = await res.text();
     const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
 
-    let visitedConfig: Record<string, StationStatus> = {}
+    const visitedConfig: Record<string, StationEntry> = {}
     try
     {
-      const filePath = "./src/routes/railways/visited.toml";
-      const file = await fs.readFile(filePath, "utf-8");
-      visitedConfig = toml.parse(file);
+      const dir = "./assets/stations";
+      const entries = await getStationEntries(dir);
+
+      for (const entry of entries)
+      {
+        const key = entry["crs"];
+        visitedConfig[key] = entry;
+      }
     }
     catch (e)
     {
-      console.warn("visited.toml not found, defaulting to all not visited - error: ", e);
+      console.warn(`Failed to gather data from directory: ${e}`)
     }
 
     const stations = parsed.data
@@ -31,7 +37,8 @@ export const useStationsData = routeLoader$<Station[]>(async () => {
           crs: row.crsCode,
           lat: parseFloat(row.lat),
           long: parseFloat(row.long),
-          status: visitedConfig[row.crsCode] ?? null,
+          line: visitedConfig[row.crsCode]?.line ?? null,
+          status: visitedConfig[row.crsCode]?.status ?? null,
         }
       ))
       .filter(s => !isNaN(s.lat) && !isNaN(s.long))
