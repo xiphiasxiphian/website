@@ -1,0 +1,215 @@
+.station-card {
+  position: relative;
+  margin: 1.5rem 0;
+  padding: 1.5rem 1.75rem;
+  background: linear-gradient(
+    180deg,
+    var(--navy-card) 0%,
+    var(--navy-mid) 100%
+  );
+  border: 1px solid var(--navy-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: var(--transition);
+  scroll-margin-top: 10rem;
+}
+
+.station-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--light-blue) 0%,
+    var(--lavender) 50%,
+    var(--pale-pink) 100%
+  );
+  opacity: 0.55;
+  transition: var(--transition);
+}
+
+.station-card:hover,
+.station-card:target {
+  border-color: rgba(137, 212, 245, 0.3);
+  box-shadow: var(--glow-blue);
+}
+
+.station-card:hover::before,
+.station-card:target::before {
+  opacity: 1;
+}
+
+.station-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.station-name {
+  font-family: "Cinzel", serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.station-name::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--lavender) 0%, transparent 100%);
+  opacity: 0.3;
+}
+
+.station-crs {
+  flex-shrink: 0;
+  font-family: "Raleway", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--light-blue);
+  padding: 0.3rem 0.9rem;
+  border-radius: 100px;
+  border: 1px solid rgba(137, 212, 245, 0.3);
+  background: rgba(137, 212, 245, 0.06);
+}
+
+.station-content {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Line header */
+
+.line-header {
+  margin-bottom: 3rem;
+  animation: titleFadeIn 0.8s ease both;
+}
+
+/* Pill, same shape/typography as .nav-link */
+.line-eyebrow {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-family: "Raleway", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lavender);
+  padding: 0.3rem 0.9rem;
+  border-radius: 100px;
+  border: 1px solid rgba(196, 175, 245, 0.3);
+  background: rgba(196, 175, 245, 0.06);
+}
+
+/* Same treatment as .site-title, scaled down so the site title stays dominant */
+.line-title {
+  font-family: "Cinzel", serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 1.25rem;
+  background: linear-gradient(
+    135deg,
+    var(--light-blue) 0%,
+    var(--lavender) 50%,
+    var(--pale-pink) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 20px rgba(196, 175, 245, 0.3));
+}
+
+.line-summary {
+  max-width: 62ch;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.line-summary p + p {
+  margin-top: 0.75rem;
+}
+
+/* Stats row */
+.line-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.line-stat {
+  padding: 0.6rem 1.1rem;
+  background: var(--navy-card);
+  border: 1px solid var(--navy-border);
+  border-radius: var(--radius);
+  transition: var(--transition);
+}
+
+.line-stat:hover {
+  border-color: rgba(137, 212, 245, 0.3);
+  box-shadow: var(--glow-blue);
+}
+
+.line-stat dt {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.line-stat dd {
+  font-family: "Cinzel", serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--light-blue);
+}
+
+/* Railway motif: sleepers between two rails, fading out to the right */
+.line-track {
+  position: relative;
+  height: 10px;
+  margin-top: 2.25rem;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(137, 212, 245, 0.3) 0 2px,
+    transparent 2px 16px
+  );
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, transparent 100%);
+  mask-image: linear-gradient(90deg, #000 0%, transparent 100%);
+}
+
+.line-track::before,
+.line-track::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--lavender), var(--light-blue));
+  opacity: 0.6;
+}
+
+.line-track::before {
+  top: 2px;
+}
+
+.line-track::after {
+  bottom: 2px;
+}
