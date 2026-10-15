@@ -1,0 +1,57 @@
+"EUS" = true
+"WFJ" = true
+
+"KGL" = false
+"APS" = false
+"HML" = false
+"BKM" = true
+"TRI" = true
+"CED" = false
+"LBZ" = false
+"BLY" = false
+
+"MKC" = false
+"WOL" = false
+
+# northampton loop
+"NMP" = true
+# "LBK" =
+
+"RUG" = true
+
+"STA" = true
+"CRE" = true
+
+
+[trent-valley]
+"NUN" = true
+"ATH" = false
+# "PSW" =
+"TAM" = true
+"LTV" = false
+"RGL" = false
+
+[birmingham-loop]
+"COV" = true
+"CNL" = false
+"THL" = false
+"BKW" = false
+"HIA" = false
+"BHI" = true
+
+# "MGN" =
+# "LEH" =
+# "SCF" =
+# "ADD" =
+
+"BHM" = true
+
+"SGB" = true
+
+[saa-branch]
+"WFN" = false
+"GSN" = false
+"BWO" = false
+"HWW" = false
+"PKT" = false
+"SAA" = true

@@ -1,0 +1,128 @@
+[north-london]
+"RMD" = true
+"KWG" = true
+"GUN" = false
+"SAT" = true
+"ACC" = true
+"WIJ" = true
+"KNR" = false
+"BSP" = false
+"BSY" = false
+"WHD" = true
+"FNY" = true
+"HDH" = true
+"GPO" = true
+"KTW" = true
+"CMD" = true
+"CIR" = false
+"HHY" = true
+"CNN" = false
+"DLK" = false
+"HKC" = false
+"HMN" = false
+"HKW" = true
+"SRA" = true
+
+[west-london]
+"SPB" = true
+"KPA" = true
+"WBP" = true
+"IMW" = true
+
+[south-london]
+# "WWR" =
+# "CLP" =
+"DMK" = true
+"PMR" = true
+# "QRP" =
+# "SBM" =
+
+[east-london]
+# "DOJ" =
+# "HGG" =
+# "HOX" =
+"SDC" = true
+"ZLW" = true
+"SDE" = true
+"WPE" = true
+"ROE" = true
+"ZCW" = true
+# "SQE" =
+"NXG" = false
+"BCY" = false
+"HPA" = false
+"FOH" = false
+"SYD" = false
+"CYP" = true
+# "PNW" =
+# "ANZ" =
+# "NWD" =
+# "WCY" =
+
+[emerson-park]
+"EMP" = true
+
+# for wcml stations like euston and watford junction, see wcml.toml
+[watford-dc]
+"SOH" = false
+"KBN" = false
+"QPW" = true
+"KNL" = false
+"HDN" = false
+"SBP" = false
+"WMB" = true
+"NWB" = true
+"SOK" = true
+"KNT" = true
+"HRW" = true
+"HDL" = false
+"HTE" = true
+# "CPK" =
+"BSH" = true
+# "WFH" =
+
+[lea-valley]
+# Core / Shared Section
+"BET" = false
+"CBH" = false
+"LOF" = false
+"HAC" = false
+
+# Chingford branch
+"CPT" = false
+"SJS" = false
+"WHC" = true
+"WST" = false
+"HIP" = false
+"CHI" = true
+
+# Cheshunt branch
+# "REC" =
+# "SKW" =
+# "SMH" =
+# "SVS" =
+# "BCV" =
+# "WHL" =
+# "SLV" =
+"EDR" = true
+"SBU" = false
+"TUR" = false
+"TEO" = false
+
+# Enfield Town branch
+"BHK" = false
+"ENF" = true
+
+[goblin]
+# "UHL" =
+# "CRH" =
+# "HRY" =
+# "STO" =
+# "BHO" =
+# "WMW" =
+# "LEM" =
+"LER" = true
+"WNP" = true
+# "WGR" =
+# Barking on c2c lines
+# "BGK" =

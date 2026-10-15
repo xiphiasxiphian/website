@@ -1,0 +1,33 @@
+"LCN" = true
+"MKR" = true
+"GBL" = true
+"SXY" = true
+
+[shml]
+"BTB" = true
+"HAB" = true
+"SLL" = false
+"HLI" = false
+"GCT" = false
+"GMB" = true
+# "GMD" =
+# "NCE" =
+"CLE" = true
+
+[poacher]
+"ANC" = false
+"RAU" = false
+"SLR" = false
+"HEC" = false
+# "SWE" =
+# "HBB" =
+"BSN" = true
+# "TPC" =
+# "WFL" =
+# "HVN" =
+# "SKG" =
+
+[brigg]
+"GNB" = true
+"KTL" = true
+"BGG" = true

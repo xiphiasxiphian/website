@@ -1,4 +1,5 @@
 import { component$, useVisibleTask$, useSignal } from '@builder.io/qwik';
+import { useNavigate } from '@builder.io/qwik-city';
 
 export type StationStatus = boolean | null
 export interface Station {
@@ -12,6 +13,7 @@ export interface Station {
 
 export const Map = component$(({ stations }: { stations: Station[] }) => {
   const mapRef = useSignal<HTMLElement>();
+  const nav = useNavigate();
 
   useVisibleTask$(async ({ track }) => {
     track(() => stations);
@@ -37,7 +39,7 @@ export const Map = component$(({ stations }: { stations: Station[] }) => {
 
     stations.forEach(station => {
       const [color, tag] = getStatusInfo(station.status);
-      const line = station.line ? `Line: ${station.line}<br/>` : ""
+      const line = station.line ? `Line: <a href="${station.line}#${station.crs}">${station.line}</a><br/>` : ""
       L.circleMarker([station.lat, station.long], {
         radius: 4,
         fillColor: color,

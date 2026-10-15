@@ -1,0 +1,33 @@
+[castle]
+"CTO" = true
+# "BUJ" =
+"LOW" = true
+"THU" = false
+"BSB" = false
+"FSK" = false
+"ROL" = false
+"NCT" = true
+"CLM" = true
+"SWD" = true
+"HKM" = true
+
+[robin-hood]
+"BLW" = true
+"HKN" = true
+"NSD" = true
+"KKB" = true
+"SPK" = true
+"MFT" = true
+"MSW" = true
+"SHB" = true
+"LAG" = true
+"CWD" = true
+"WWL" = true
+"WRK" = true
+
+[nott-grantham]
+"NET" = true
+"RDF" = false
+"BIN" = false
+"ALK" = false
+"ELO" = true
