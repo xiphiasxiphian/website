@@ -55,3 +55,6 @@
 "HWW" = false
 "PKT" = false
 "SAA" = true
+
+[manchester-direct]
+"SOT" = true

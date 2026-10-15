@@ -27,7 +27,8 @@
 
 [nott-grantham]
 "NET" = true
-"RDF" = false
-"BIN" = false
-"ALK" = false
+"RDF" = true
+"BIN" = true
+"ALK" = true
 "ELO" = true
+"BTF" = true

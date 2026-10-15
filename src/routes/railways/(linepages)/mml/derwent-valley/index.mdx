@@ -3,19 +3,45 @@ title: Derwent Valley Line
 description: The scenic route from Derby to Matlock.
 ---
 
-import { StationCard } from '~/components/station_components';
+import { StationCard } from '~/components/station-components/station-card';
+import { LineHeader } from "~/components/station-components/line-header";
 
-# The Derwent Valley Line
+<LineHeader
+  title="The Derwent Valley Line"
+  eyebrow="East Midlands"
+  stats={[
+    { label: "From", value: "Derby" },
+    { label: "To", value: "Matlock" },
+    { label: "River", value: "Derwent" },
+  ]}
+>
+  The Derwent Valley Line is a railway line in the East Midlands of England. It runs from Derby to Matlock, following the valley of the River Derwent.
+</LineHeader>
 
-The Derwent Valley Line is a railway line in the East Midlands of England. It runs from Derby to Matlock, following the valley of the River Derwent.
-
----
-
-<StationCard crs="DBY" name="Derby">
+<StationCard crs="DFI" name="Duffield">
+    Random Information
 </StationCard>
 
 <StationCard crs="BLP" name="Belper">
+    Random Information
+</StationCard>
+
+<StationCard crs="AMB" name="Ambergate">
+    Random Information
+</StationCard>
+
+<StationCard crs="WTS" name="Whatstandwell">
+    Random Information
+</StationCard>
+
+<StationCard crs="CMF" name="Cromford">
+    Random Information
+</StationCard>
+
+<StationCard crs="MTB" name="Matlock Bath">
+    Random Information
 </StationCard>
 
 <StationCard crs="MAT" name="Matlock">
+    Random Information
 </StationCard>
